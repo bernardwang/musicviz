@@ -1,0 +1,44 @@
+{
+  "name": "musicviz",
+  "version": "0.0.0",
+  "scripts": {
+    "watch": "watchify app/app.jsx --extension=.jsx -o public/js/bundle.js -v",
+    "browserify": "browserify app/app.jsx --extension=.jsx | uglifyjs > public/js/bundle.js",
+    "build": "npm run browserify",
+		"start": "npm run watch"
+  },
+  "contributors": [{
+		"name": "Bernard Wang",
+		"name": "Noah Lafferty"
+	}],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^2.1.4",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0"
+  },
+  "devDependencies": {
+    "browserify": "~11.2.0",
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-concat-css": "^2.2.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-sass": "^2.0.4",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.4.2",
+    "browser-sync": "^2.9.11",
+    "reactify": "~1.1.1",
+    "uglify-js": "^2.5.0",
+    "watchify": "~3.4.0"
+  },
+  "browserify": {
+    "transform": [
+			[ 
+				"reactify",
+				{ "es6": true } 
+			]
+		]
+  }
+}

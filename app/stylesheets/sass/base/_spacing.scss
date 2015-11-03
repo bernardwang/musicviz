@@ -1,0 +1,5 @@
+$base-spacing: 2rem;
+
+@function spacing($level) {
+  @return (((0.5 * $level) + 1) * $base-spacing);
+}
