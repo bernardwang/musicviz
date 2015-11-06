@@ -2,10 +2,10 @@
   "name": "musicviz",
   "version": "0.0.0",
   "scripts": {
-		"watch"		: "watchify app/app.jsx --extension=.jsx -o public/js/bundle.js -v",
+		"react"		: "watchify app/app.jsx --extension=.jsx -o public/js/bundle.js -v",
 		"compass" :	"compass watch",
 		"serve"		: "gulp serve",
-    "start"		: "npm run watch & npm run compass & npm run serve"
+    "start"		: "npm run react & npm run compass & npm run serve"
   },
   "contributors": [
     {
