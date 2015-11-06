@@ -9,7 +9,8 @@
   },
   "contributors": [
     {
-      "name": "Noah Lafferty"
+      "name": "Noah Lafferty",
+			"name": "Bernard Wang"
     }
   ],
   "license": "MIT",

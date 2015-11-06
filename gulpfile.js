@@ -37,8 +37,8 @@ var ALL_CSS				= './app/styles/css/*.css'; // probably not needed
 var DEST_CSS			= './app/styles/css/';			// probably not needed
 var	DIST_CSS			= './public/css/';
 
-var ALL_JS				= './public/*.js';	
-var DIST_JS				= './public/';
+var ALL_JS				= './public/js/*.js';	
+var DIST_JS				= './public/js/';
 
 // *************************************
 //
