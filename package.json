@@ -2,15 +2,14 @@
   "name": "musicviz",
   "version": "0.0.0",
   "scripts": {
-		"react"		: "watchify app/app.jsx --extension=.jsx -o public/js/bundle.js -v",
-		"compass" :	"compass watch",
-		"serve"		: "gulp serve",
-    "start"		: "npm run react & npm run compass & npm run serve"
+    "react": "watchify app/app.jsx --extension=.jsx -o public/js/bundle.js -v",
+    "compass": "compass watch",
+    "serve": "gulp serve",
+    "start": "npm run react & npm run compass & npm run serve"
   },
   "contributors": [
     {
-      "name": "Noah Lafferty",
-			"name": "Bernard Wang"
+      "name": "Bernard Wang"
     }
   ],
   "license": "MIT",
@@ -22,6 +21,7 @@
   "devDependencies": {
     "browser-sync": "^2.9.11",
     "browserify": "~11.2.0",
+    "compass": "^0.1.1",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-concat-css": "^2.2.0",
@@ -34,7 +34,12 @@
   },
   "browserify": {
     "transform": [
-			[ "reactify", { "es6": true } ]
-		]
+      [
+        "reactify",
+        {
+          "es6": true
+        }
+      ]
+    ]
   }
 }
