@@ -16,7 +16,8 @@
   "dependencies": {
     "jquery": "^2.1.4",
     "react": "^0.14.0",
-    "react-dom": "^0.14.0"
+    "react-dom": "^0.14.0",
+		"jquery": "^2.1.4"
   },
   "devDependencies": {
     "browser-sync": "^2.9.11",
