@@ -76,7 +76,7 @@ header .username::-webkit-input-placeholder {
 /* line 1, ../../app/styles/sass/components/_Main.scss */
 main {
   max-width: 70rem;
-  height: 100%;
+  min-height: 50rem;
   background-color: #E9EBED;
   margin-left: auto;
   margin-right: auto;

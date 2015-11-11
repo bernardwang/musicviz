@@ -15,12 +15,19 @@
   ],
   "license": "MIT",
   "dependencies": {
+		"body-parser": "~1.0.1",
+    "express": "~4.13.3",
+    "express-handlebars": "~2.0.1",
     "jquery": "^2.1.4",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
 		"jquery": "^2.1.4"
   },
   "devDependencies": {
+		"keymirror": "^0.1.1",
+    "object-assign": "^4.0.1",
+    "babel": "^5.8.23",
+    "node-jsx": "~0.13.3",
     "browser-sync": "^2.9.11",
     "browserify": "~11.2.0",
     "gulp": "^3.9.0",

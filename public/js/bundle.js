@@ -20,9 +20,9 @@ ReactDOM.render(
 
 },{"./components/MusicApp":4,"react":164,"react-dom":8}],2:[function(require,module,exports){
 // 
-//	header.jsx
+//	AppHeader.jsx
 //
-//	Site header bar
+//	Header and input 
 //
 
 var React = require('react');
@@ -55,21 +55,21 @@ module.exports = Header;
 
 },{"react":164}],3:[function(require,module,exports){
 // 
-// 	main.jsx
+// 	AppMain.jsx
 //
-//	Site header bar
+//	Main content
 //
 
 var React = require('react');
+//var D3 = require('D3Chart.js');
 
 var Main = React.createClass({displayName: "Main",
 	
   render: function() {
-		var display = this.props.test;
 		
 		return (
 			React.createElement("main", null, 
-				display
+				this.props.data
 			)
 		)
 		
@@ -80,65 +80,100 @@ module.exports = Main;
 
 },{"react":164}],4:[function(require,module,exports){
 // 
-// 	main.jsx
+// 	MusicApp.jsx
 //
-//	Site header bar
+//	Entry point for React App
 //
 
 var React = require('react');
 var ajaxWrapper = require('../utils/ajaxWrapper');
 
-var Header = require('./Header');
-var Main = require('./Main');
+var AppHeader = require('./AppHeader');
+var AppMain = require('./AppMain');
 
 var MusicApp = React.createClass({displayName: "MusicApp",
 	
 	getInitialState: function() {
     return {
-      username: ''
+			musicData: React.PropTypes.array
     };
   },
 	
-	submitUsernameAction: function(username) {
-		this.setState({ 
-			username: username
-    })
-  },
-	
-	apiCall: function(user) {
-		if(user) {
-			var url = 'http://ws.audioscrobbler.com/2.0/';
-			var type = 'POST';
-			var data = 	'method=artist.getinfo&' +
-           				'artist=After+The+Burial&' +
-           				'api_key=57ee3318536b23ee81d6b27e36997cde&' +
-           				'format=json';
-			var dataType = 'jsonp';
-			ajaxWrapper(url, type, data, dataType, function(res) {
-				console.log(res);
-				return res;
+	/**
+	 *	Gets top artist list from Lastfm user profile,
+	 *	query every artist for genre and play count
+	 *	saves data in music store for D3 to use
+	 */
+	updateMusic: function(username) {
+		var result = [];
+		var limit = 20;
+		var that = this;
+		
+		this.userCall(username, limit, function(data) {
+		
+			var artists = data.topartists.artist;
+			artists.forEach(function(artist, index, array) {
+				
+				that.artistCall(artist.name, function(data) {
+					result.push({
+						"name": artist.name,
+						"genre": data.artist.tags.tag.slice(0,3),
+						"plays": data.artist.stats.playcount,
+						"count": artist.playcount
+					});
+				});
+				
+				if (index === array.length - 1) {		// last index, set result 
+        	that.setState({ 
+						musicData: result
+    			});
+        }
+				
 			});
-		}
-		return '';
+		});
+  },
+
+	/**
+	 *	AJAX call to get user top artists
+	 */
+	userCall: function(username, limit, callback) {
+		var url = 'http://ws.audioscrobbler.com/2.0/';
+		var type = 'POST';
+		var data = 'method=user.getTopArtists' + '&user=' + username + '&limit='+ limit + '&api_key=57ee3318536b23ee81d6b27e36997cde' + '&format=json';
+		var dataType = 'jsonp';
+		ajaxWrapper(url, type, data, dataType, function(res) {
+			callback(res);
+		});
+	},
+	
+	/**
+	 *	AJAX call to get artist info
+	 */
+	artistCall: function(artist, callback){
+		var url = 'http://ws.audioscrobbler.com/2.0/';
+		var type = 'POST';
+		var data = 'method=artist.getInfo' + '&artist=' + artist + '&api_key=57ee3318536b23ee81d6b27e36997cde' + '&format=json';
+		var dataType = 'jsonp';
+		ajaxWrapper(url, type, data, dataType, function(res) {
+			callback(res);
+		});
 	},
 	
   render: function() {	
 		
-		var api = 'test';
-		
 		return (
 			React.createElement("div", null, 
-				React.createElement(Header, {submitUsername: this.submitUsernameAction}), 
-				React.createElement(Main, {test: api})
+				React.createElement(AppHeader, {submitUsername: this.updateMusic}), 
+				React.createElement(AppMain, {data: this.state.musicData})
 			)
 		)
+	}
 		
-  }
 });
 
 module.exports = MusicApp;
 
-},{"../utils/ajaxWrapper":5,"./Header":2,"./Main":3,"react":164}],5:[function(require,module,exports){
+},{"../utils/ajaxWrapper":5,"./AppHeader":2,"./AppMain":3,"react":164}],5:[function(require,module,exports){
 var $ = require('jQuery');
 
 var ajaxWrapper = function(url, type, data, dataType, callback) {
