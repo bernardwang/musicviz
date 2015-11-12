@@ -14,7 +14,7 @@ var MusicApp = React.createClass({
 	
 	getInitialState: function() {
     return {
-			musicData: React.PropTypes.array
+			artistData: []
     };
   },
 	
@@ -31,24 +31,52 @@ var MusicApp = React.createClass({
 		this.userCall(username, limit, function(data) {
 		
 			var artists = data.topartists.artist;
-			artists.forEach(function(artist, index, array) {
+			
+			// sync with recursion
+			var getArtistInfo = function(artists, index){
+				if(index < artists.length){
+					var artist = artists[index];
+					
+					that.artistCall(artist.name, function(data) {
+						result.push({
+							"name": artist.name,
+							"genre": data.artist.tags.tag.slice(0,2),
+							"plays": data.artist.stats.playcount,
+							"count": artist.playcount
+						});
+						
+						getArtistInfo(artists, ++index);
+					});
+				}
+				else{
+					that.setState({ 
+						artistData: result
+    			});
+				}
+			}
+			
+			getArtistInfo(artists, 0);
+			
+			// async
+			/*artists.forEach(function(artist, index, array) {
 				
 				that.artistCall(artist.name, function(data) {
 					result.push({
 						"name": artist.name,
-						"genre": data.artist.tags.tag.slice(0,3),
+						"genre": data.artist.tags.tag.slice(0,2),
 						"plays": data.artist.stats.playcount,
 						"count": artist.playcount
 					});
 				});
 				
 				if (index === array.length - 1) {		// last index, set result 
-        	that.setState({ 
-						musicData: result
+					console.log(result.length);
+					that.setState({ 
+						artistData: result
     			});
         }
 				
-			});
+			});*/
 		});
   },
 
@@ -79,11 +107,10 @@ var MusicApp = React.createClass({
 	},
 	
   render: function() {	
-		
 		return (
 			<div>
 				<AppHeader submitUsername={this.updateMusic}/>
-				<AppMain data={this.state.musicData}/>
+				<AppMain artistData={this.state.artistData}/>
 			</div>
 		)
 	}
