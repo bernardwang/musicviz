@@ -14,6 +14,7 @@ var Header = React.createClass({
 		if(username){
 			this.props.submitUsername(username);
 		}
+		this.refs.username.value = '';
 	},
 
   render: function() {
@@ -22,7 +23,7 @@ var Header = React.createClass({
 			<header>
 				<h1 className='title'> musicviz </h1>
 				<form onSubmit={this.onSubmit} >
-					<input className='username' placeholder='last.fm username' ref='username' type='text'/>
+					<input className='username' placeholder='Enter your Last.fm username' ref='username' type='text'/>
 				</form>
 			</header>
 		)

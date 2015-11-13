@@ -5,6 +5,7 @@
 //
 
 var React = require('react');
+var async = require('async');
 var ajaxWrapper = require('../utils/ajaxWrapper');
 
 var AppHeader = require('./AppHeader');
@@ -29,14 +30,17 @@ var MusicApp = React.createClass({
 		var that = this;
 		
 		this.userCall(username, limit, function(data) {
-		
+			if(data.error) {
+				alert('Invalid username, please try again.');
+				return;
+			}
+			
+			// array of artist objects
 			var artists = data.topartists.artist;
 			
-			// sync with recursion
-			var getArtistInfo = function(artists, index){
-				if(index < artists.length){
-					var artist = artists[index];
-					
+			// async loop, get artist info
+			async.each(artists, 
+				function(artist, callback) {
 					that.artistCall(artist.name, function(data) {
 						result.push({
 							"name": artist.name,
@@ -44,39 +48,15 @@ var MusicApp = React.createClass({
 							"plays": data.artist.stats.playcount,
 							"count": artist.playcount
 						});
-						
-						getArtistInfo(artists, ++index);
+						callback();
 					});
-				}
-				else{
-					that.setState({ 
+				},
+				function(err){
+    			that.setState({ 
 						artistData: result
     			});
-				}
-			}
-			
-			getArtistInfo(artists, 0);
-			
-			// async
-			/*artists.forEach(function(artist, index, array) {
-				
-				that.artistCall(artist.name, function(data) {
-					result.push({
-						"name": artist.name,
-						"genre": data.artist.tags.tag.slice(0,2),
-						"plays": data.artist.stats.playcount,
-						"count": artist.playcount
-					});
-				});
-				
-				if (index === array.length - 1) {		// last index, set result 
-					console.log(result.length);
-					that.setState({ 
-						artistData: result
-    			});
-        }
-				
-			});*/
+  			}	
+			);
 		});
   },
 

@@ -36,10 +36,11 @@ var constructData = function(artists) {
 	var genres = {};
 	var totalplays = 0;
 	
+	// combines genre data from artists
 	for(var i = 0; i < artists.length; i++) {
 		var artist = artists[i];
-		var genre = artist.genre[0].name;
-		//genre = genre.toLowerCase().replace(/\s+/g, ''); // normalize text
+		var genre = artist.genre[0].name;		// for now getting first genre tag
+		genre = genre.toLowerCase().replace(/[\s-]+/g, ''); // normalize text
 		totalplays += parseInt(artist.plays);
 		if (genres[genre] === undefined){
 			genres[genre] = parseInt(artist.plays);
@@ -47,8 +48,9 @@ var constructData = function(artists) {
 		else {
 			genres[genre] += parseInt(artist.plays);
 		}
-	};
+	}
 	
+	// formats data for d3
 	for(var genre in genres) {
 		layer.push({
 			'axis': genre,
