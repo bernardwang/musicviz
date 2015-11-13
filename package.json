@@ -5,6 +5,7 @@
     "react": "watchify app/app.jsx --extension=.jsx -o public/js/bundle.js -v",
     "compass": "compass watch",
     "serve": "gulp serve",
+		"nodemon": "nodemon server.js",
     "start": "npm run react & npm run compass & npm run serve"
   },
   "contributors": [
@@ -18,6 +19,7 @@
     "body-parser": "~1.0.1",
     "express": "~4.13.3",
     "express-handlebars": "~2.0.1",
+		"mongoose": "^4.1.10",
     "jquery": "^2.1.4",
     "react": "^0.14.0",
     "react-dom": "^0.14.0"
@@ -29,6 +31,7 @@
     "node-jsx": "~0.13.3",
     "browser-sync": "^2.9.11",
     "browserify": "~11.2.0",
+		"nodemon": "^1.7.1",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-concat-css": "^2.2.0",

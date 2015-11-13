@@ -75,8 +75,9 @@ gulp.task('js', ['lint',], function(){
 // setup browser sync
 gulp.task('sync', function() {
 	sync.init({
-		server: { baseDir: "./public" },
-    reloadDelay: 1000
+		proxy: 'http://localhost:3000',
+		//server: './public',
+		reloadDelay: 1000
 	});
 	gulp.watch(ALL_SASS).on('change', sync.reload);
 	gulp.watch(ALL_JS).on('change', sync.reload);
