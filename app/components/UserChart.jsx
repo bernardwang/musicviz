@@ -41,10 +41,13 @@ var UserChart = React.createClass({
 		
 		// formats data for d3
 		for(var genre in genres) {
-			layer.push({
-				'axis': genre,
-				'value': (genres[genre])/totalplays
-			});
+			var percent = genres[genre]/totalplays;
+			if(percent >= 0.03) {
+				layer.push({
+					'axis': genre,
+					'value': percent
+				});
+			}
 		}
 		
 		// radar chart format: [[{},{}...{}]]
