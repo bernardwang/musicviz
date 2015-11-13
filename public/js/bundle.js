@@ -18,7 +18,7 @@ ReactDOM.render(
 	React.createElement(MusicApp, null), mountNode
 );
 
-},{"./components/MusicApp":5,"react":167,"react-dom":11}],2:[function(require,module,exports){
+},{"./components/MusicApp":4,"react":167,"react-dom":11}],2:[function(require,module,exports){
 // 
 //	AppHeader.jsx
 //
@@ -62,22 +62,18 @@ module.exports = Header;
 //
 
 var React = require('react');
-var D3 = require('./D3Chart.js');
+
+var UserChart = require('./UserChart');
+
 var Main = React.createClass({displayName: "Main",
 	
-	componentDidUpdate: function() {
-		if(this.props.artistData.length > 0) {
-			D3(this.props.artistData);
-		}
-  },
-
   render: function() {
 		//Call function to draw the Radar chart
-		var d3ElementName = 'radarChart';
+		var d3ElementName = 'userChart';
 
 		return (
 			React.createElement("main", null, 
-				React.createElement("div", {className: d3ElementName})
+				React.createElement(UserChart, {artistData: this.props.artistData, elementName: d3ElementName})
 			)
 		)
 		
@@ -86,81 +82,7 @@ var Main = React.createClass({displayName: "Main",
 
 module.exports = Main;
 
-},{"./D3Chart.js":4,"react":167}],4:[function(require,module,exports){
-// 
-// 	D3Chart.js
-//
-//	D3 visualizations using radarChart
-//
-
-var RadarChart = require('../utils/radarChart.js');
-
-// setup
-var margin = {top: 100, right: 100, bottom: 100, left: 100};
-var width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right;
-var height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
-		
-// draws chart
-var color = d3.scale.ordinal()
-	.range(["#EDC951","#CC333F","#00A0B0"]);
-	
-var radarChartOptions = {
-  w: width,
-  h: height,
-  margin: margin,
-  maxValue: 0.5,
-  levels: 5,
-  roundStrokes: true,
-  color: color
-};
-
-
-/**
- *	Takes list of artists and 
- *	constructs list of genre percentages
- */
-var constructData = function(artists) {
-	var result = [];
-	var layer = [];
-	var genres = {};
-	var totalplays = 0;
-	
-	// combines genre data from artists
-	for(var i = 0; i < artists.length; i++) {
-		var artist = artists[i];
-		var genre = artist.genre[0].name;		// for now getting first genre tag
-		genre = genre.toLowerCase().replace(/[\s-]+/g, ''); // normalize text
-		totalplays += parseInt(artist.plays);
-		if (genres[genre] === undefined){
-			genres[genre] = parseInt(artist.plays);
-		}
-		else {
-			genres[genre] += parseInt(artist.plays);
-		}
-	}
-	
-	// formats data for d3
-	for(var genre in genres) {
-		layer.push({
-			'axis': genre,
-			'value': (genres[genre])/totalplays
-		});
-	}
-	
-	// radar chart format: [[{},{}...{}]]
-	result.push(layer);
-	return result;
-}
-
-//Call function to draw the Radar chart
-var init = function(artists){
-	var data = constructData(artists);
-	RadarChart(".radarChart", data, radarChartOptions);
-}
-
-module.exports = init;
-
-},{"../utils/radarChart.js":7}],5:[function(require,module,exports){
+},{"./UserChart":5,"react":167}],4:[function(require,module,exports){
 // 
 // 	MusicApp.jsx
 //
@@ -262,7 +184,95 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 
 module.exports = MusicApp;
 
-},{"../utils/ajaxWrapper":6,"./AppHeader":2,"./AppMain":3,"async":8,"react":167}],6:[function(require,module,exports){
+},{"../utils/ajaxWrapper":6,"./AppHeader":2,"./AppMain":3,"async":8,"react":167}],5:[function(require,module,exports){
+// 
+//  UserChart.jsx
+//
+//	D3 radar chart for user genres
+//
+
+var React = require('react');
+
+var RadarChart = require('../utils/radarChart.js');
+
+var UserChart = React.createClass({displayName: "UserChart",
+	
+	componentDidUpdate: function() {
+		if(this.props.artistData.length > 0) {
+			var element = '.'+this.props.elementName;
+			var data = this.getChartData(this.props.artistData);
+			var options = this.getChartOptions();
+			RadarChart(element, data, options);
+		}
+  },
+	
+	getChartData: function(artists) {
+		var result = [];	// final data radar chart accepts as input
+		var layer = [];	// single layer/color of data on chart
+		var genres = {};
+		var totalplays = 0;
+		
+		// combines genre data from artists
+		for(var i = 0; i < artists.length; i++) {
+			var artist = artists[i];
+			var genre = artist.genre[0].name;		// for now getting first genre tag
+			genre = genre.toLowerCase().replace(/[\s-]+/g, ''); // normalize text
+			totalplays += parseInt(artist.plays);
+			if (genres[genre] === undefined){
+				genres[genre] = parseInt(artist.plays);
+			}
+			else {
+				genres[genre] += parseInt(artist.plays);
+			}
+		}
+		
+		// formats data for d3
+		for(var genre in genres) {
+			layer.push({
+				'axis': genre,
+				'value': (genres[genre])/totalplays
+			});
+		}
+		
+		// radar chart format: [[{},{}...{}]]
+		result.push(layer);
+		return result;
+	},
+	
+	getChartOptions: function() {
+		var margin = {top: 100, right: 100, bottom: 100, left: 100};
+		var width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right;
+		var height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
+		
+		// draws chart
+		var color = d3.scale.ordinal()
+			.range(["#EDC951","#CC333F","#00A0B0"]);
+		
+		var radarChartOptions = {
+			w: width,
+			h: height,
+			margin: margin,
+			maxValue: 0.5,
+			levels: 5,
+			roundStrokes: true,
+			color: color
+		};
+		
+		return radarChartOptions;
+	},
+
+  render: function() {
+		
+		return (
+			React.createElement("div", {className: this.props.elementName})
+		)
+		
+  }
+});
+
+module.exports = UserChart;
+
+},{"../utils/radarChart.js":7,"react":167}],6:[function(require,module,exports){
 var $ = require('jQuery');
 
 var ajaxWrapper = function(url, type, data, dataType, callback) {
