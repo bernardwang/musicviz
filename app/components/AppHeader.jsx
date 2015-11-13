@@ -12,7 +12,7 @@ var Header = React.createClass({
 		event.preventDefault();
 	  var username = this.refs.username.value.trim();
 		if(username){
-			this.props.submitUsername(username);
+			this.props.submitForm(username, "Slytherin"); // hardcoded in for now
 		}
 		this.refs.username.value = '';
 	},

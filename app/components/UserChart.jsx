@@ -80,7 +80,10 @@ var UserChart = React.createClass({
   render: function() {
 		
 		return (
-			<div className={this.props.elementName}></div>
+			<div>
+				<h1>{this.props.username}</h1>
+				<div className={this.props.elementName}></div>
+			</div>
 		)
 		
   }

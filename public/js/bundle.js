@@ -33,7 +33,7 @@ var Header = React.createClass({displayName: "Header",
 		event.preventDefault();
 	  var username = this.refs.username.value.trim();
 		if(username){
-			this.props.submitUsername(username);
+			this.props.submitForm(username, "Slytherin"); // hardcoded in for now
 		}
 		this.refs.username.value = '';
 	},
@@ -68,12 +68,10 @@ var UserChart = require('./UserChart');
 var Main = React.createClass({displayName: "Main",
 	
   render: function() {
-		//Call function to draw the Radar chart
-		var d3ElementName = 'userChart';
-
+			
 		return (
 			React.createElement("main", null, 
-				React.createElement(UserChart, {artistData: this.props.artistData, elementName: d3ElementName})
+				React.createElement(UserChart, {username: this.props.username, artistData: this.props.artistData, elementName: 'userChart'})
 			)
 		)
 		
@@ -100,6 +98,8 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 	
 	getInitialState: function() {
     return {
+			username: '',
+			userhouse: '',
 			artistData: []
     };
   },
@@ -109,7 +109,7 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 	 *	query every artist for genre and play count
 	 *	saves data in music store for D3 to use
 	 */
-	updateMusic: function(username) {
+	getArtistData: function(username, userhouse) {
 		var result = [];
 		var limit = 20;
 		var that = this;
@@ -138,6 +138,8 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 				},
 				function(err){
     			that.setState({ 
+						username: username,
+						userhouse: userhouse,
 						artistData: result
     			});
   			}	
@@ -174,8 +176,8 @@ var MusicApp = React.createClass({displayName: "MusicApp",
   render: function() {	
 		return (
 			React.createElement("div", null, 
-				React.createElement(AppHeader, {submitUsername: this.updateMusic}), 
-				React.createElement(AppMain, {artistData: this.state.artistData})
+				React.createElement(AppHeader, {submitForm: this.getArtistData}), 
+				React.createElement(AppMain, {username: this.state.username, userhouse: this.state.userhouse, artistData: this.state.artistData})
 			)
 		)
 	}
@@ -267,7 +269,10 @@ var UserChart = React.createClass({displayName: "UserChart",
   render: function() {
 		
 		return (
-			React.createElement("div", {className: this.props.elementName})
+			React.createElement("div", null, 
+				React.createElement("h1", null, this.props.username), 
+				React.createElement("div", {className: this.props.elementName})
+			)
 		)
 		
   }
@@ -351,6 +356,7 @@ var RadarChart = function(id, data, options) {
 			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
 			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
 			.attr("class", "radar"+id);
+			
 	//Append a g element		
 	var g = svg.append("g")
 			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");

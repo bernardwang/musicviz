@@ -11,12 +11,10 @@ var UserChart = require('./UserChart');
 var Main = React.createClass({
 	
   render: function() {
-		//Call function to draw the Radar chart
-		var d3ElementName = 'userChart';
-
+			
 		return (
 			<main>
-				<UserChart artistData={this.props.artistData} elementName={d3ElementName}/>
+				<UserChart username={this.props.username} artistData={this.props.artistData} elementName={'userChart'}/>
 			</main>
 		)
 		

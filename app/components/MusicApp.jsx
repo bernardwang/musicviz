@@ -15,6 +15,8 @@ var MusicApp = React.createClass({
 	
 	getInitialState: function() {
     return {
+			username: '',
+			userhouse: '',
 			artistData: []
     };
   },
@@ -24,7 +26,7 @@ var MusicApp = React.createClass({
 	 *	query every artist for genre and play count
 	 *	saves data in music store for D3 to use
 	 */
-	updateMusic: function(username) {
+	getArtistData: function(username, userhouse) {
 		var result = [];
 		var limit = 20;
 		var that = this;
@@ -53,6 +55,8 @@ var MusicApp = React.createClass({
 				},
 				function(err){
     			that.setState({ 
+						username: username,
+						userhouse: userhouse,
 						artistData: result
     			});
   			}	
@@ -89,8 +93,8 @@ var MusicApp = React.createClass({
   render: function() {	
 		return (
 			<div>
-				<AppHeader submitUsername={this.updateMusic}/>
-				<AppMain artistData={this.state.artistData}/>
+				<AppHeader submitForm={this.getArtistData}/>
+				<AppMain username={this.state.username} userhouse={this.state.userhouse} artistData={this.state.artistData}/>
 			</div>
 		)
 	}
