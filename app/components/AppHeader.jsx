@@ -5,8 +5,9 @@
 //
 
 var React = require('react');
+var AppForm = require('./AppForm');
 
-var Header = React.createClass({
+var AppHeader = React.createClass({
 	
 	onSubmit: function(event) {
 		event.preventDefault();
@@ -22,13 +23,11 @@ var Header = React.createClass({
 		return (
 			<header>
 				<h1 className='title'> musicviz </h1>
-				<form onSubmit={this.onSubmit} >
-					<input className='username' placeholder='Enter your Last.fm username' ref='username' type='text'/>
-				</form>
+				<AppForm submitForm = {this.props.submitForm}/>
 			</header>
 		)
 		
   }
 });
 
-module.exports = Header;
+module.exports = AppHeader;

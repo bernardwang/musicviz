@@ -1,0 +1,17 @@
+header{
+	max-width: $max;
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding: spacing(1);
+	
+	@include type-setting(2);
+	color: white;
+	text-align: center;
+	
+	background-color: $highlight;
+	
+	.title{
+		width: 100%;
+	}
+}

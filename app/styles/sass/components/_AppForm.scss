@@ -1,0 +1,36 @@
+form{
+	margin-top: spacing(2);
+	
+	button{
+		margin: spacing(0);
+		padding: spacing(0);
+		
+		border: 0;
+		border-radius: 1rem;
+		
+		background-color: rgba(0, 0, 0, .1);
+		color: white;
+		
+		&:hover{
+			
+		}
+	}
+	
+	.username{
+		width: 100%;
+		height: 5rem;
+		margin: spacing(0);
+		padding: spacing(0);
+		@include box-sizing(border-box);
+		
+		border: 0;
+		border-radius: 1rem;
+		
+		background-color: rgba(0, 0, 0, .1);
+		color: white;
+		
+		@include input-placeholder {
+    	color: white;
+		};
+	}	
+}
