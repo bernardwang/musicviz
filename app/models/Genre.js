@@ -10,10 +10,11 @@ var Personality = require('./Personality');
 var Schema = mongoose.Schema;
 
 var GenreSchema = new Schema({
-	name		: String,
-	value		: Number,
-	count		: Number,
-	houses	: [Personality]
+	name				: String,														// genre name
+	value				: { type: Number, default: 0 },			// total combined percentages
+	count				: { type: Number, default: 0 },			// total entries
+	personality	: [Personality],										// corresponding categories
+	category		: Number 														// number representing generalized genre category, not yet 
 });
 
 /**
@@ -22,10 +23,10 @@ var GenreSchema = new Schema({
 GenreSchema.statics.addGenre = function(err, data, callback) {
 	/*data.forEach(function(item){
 		genre.create({
-			name		: String,
-			value		: Number,
-			count		: Number,
-			houses	: [Personality]
+			name			: item.name,
+			value			: item.value,
+			count			: item.count,
+			houses		: []
 			order			: item.order,
 			revision	: item.revision,
 			msg				: item.msg,

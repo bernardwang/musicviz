@@ -10,50 +10,44 @@ var Artist = require('../models/Artist');
 module.exports = function(app) {
 	
 	// Add comment to specified commit
-	/*app.post('/api/commits/:id/comments', function(req, res) {
-  	Commit.findById(req.params.id, function(err, commit) {
-			if(err) {
-      	res.send(err);
-			}	
-			
-			// Append new comment sub document
-			var comment = commit.comments.create({
-				text: req.body.text
-			});
-			commit.comments.push(comment);
-			
-			// Save to db
-			commit.save(function(err) {
-      	if(err) {
-					res.send(err);
+	app.post('/api/music/genres', function(req, res) {
+		var result;
+		
+		Genre.findOne({ 'name': req.body.name }, function(err, genre) {
+			if(err) {	// genre does not already exist in db
+      	// find generalized genre
+				var personality = [];
+				for(var i = 0; i < 4; i++) {
+					personality.push(Genre.personality.create());
 				}
-				res.json(commit);
-			});
-    });
-  }); 
-    
-	// Delete comment from specified commit
-	app.delete('/api/commits/:id/comments/:comment_id', function(req, res) {
-		Commit.findById(req.params.id, function(err, commit) {
-			if(err) {
-      	res.send(err);
-			}	
-
-			// Removes matching comment
-			for(var i = 0; i<commit.comments.length; i++) {
-				if(commit.comments[i]._id == req.params.comment_id) {
-					commit.comments.splice(i,1);
-					// Save to db
-					commit.save(function(err) {
-      			if(err) {
-							res.send(err);
-						}
-						res.json(commit);
-					});
-				}
+				personality[req.body.personality].value = req.body.value;
+				personality[req.body.personality].count = 1;
+				
+				result = new Genre({
+					name				: req.body.name,													
+					value				: { type: Number, default: 0 },		
+					count				: { type: Number, default: 0 },		
+					personality	: personality,									
+					category		: 0 	// currently unused												
+				});
+			}
+			else{ // existing genre, update it
+				genre.value += req.body.value;
+				genre.count += 1;
+				var person = genre.personality[req.body.personality];
+				person.value += req.body.value;
+				person.count += 1;
+				genre.personality[req.body.personality] = person;
+				
+				genre.save(function(err) {
+					if(err) {
+						res.send(err);
+					}
+					result = genre;
+				});
 			}
 			
+			res.json(result);
 		});
-	});*/
- 
+  });  
 }

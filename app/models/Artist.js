@@ -10,9 +10,10 @@ var Personality = require('./Personality');
 var Schema = mongoose.Schema;
 
 var ArtistSchema = new Schema({
-	name		: String,
-	count		: Number,
-	houses	: [Personality]
+	name		: String,													// artist name
+	value		: { type: Number, default: 0 },		// total combined rankings
+	count		: { type: Number, default: 0 },		// total entries
+	houses	: [Personality]										// corresponding categories
 });
 
 /**
