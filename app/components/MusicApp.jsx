@@ -1,58 +1,86 @@
 // 
-// 	main.jsx
+// 	MusicApp.jsx
 //
-//	Site header bar
+//	Entry point for React App
 //
 
 var React = require('react');
-var ajaxWrapper = require('../utils/ajaxWrapper');
-
-var Header = require('./Header');
-var Main = require('./Main');
+var getArtistData = require('../utils/getArtistData.js');
+var getGenreData = require('../utils/getGenreData.js');
+var AppHeader = require('./AppHeader');
+var AppMain = require('./AppMain');
 
 var MusicApp = React.createClass({
 	
 	getInitialState: function() {
     return {
-      username: ''
+			username: '',
+			userhouse: '',
+			artistData: [],
+			genreData: {}
     };
   },
 	
-	submitUsernameAction: function(username) {
-		this.setState({ 
-			username: username
-    })
+	/**
+	 *	Gets array of top artists from Lastfm user profile
+	 *	Saves data in state for D3 to use
+	 */
+	getArtists: function(username, userhouse) {
+		var that = this;
+		getArtistData(username, function(data){
+			if(data) { // no errors, valid result
+				that.setState({ 
+					username: username,
+					userhouse: userhouse,
+					artistData: data
+   			});
+				that.getGenres();
+			}
+		});
   },
 	
-	apiCall: function(user) {
-		if(user) {
-			var url = 'http://ws.audioscrobbler.com/2.0/';
-			var type = 'POST';
-			var data = 	'method=artist.getinfo&' +
-           				'artist=After+The+Burial&' +
-           				'api_key=57ee3318536b23ee81d6b27e36997cde&' +
-           				'format=json';
-			var dataType = 'jsonp';
-			ajaxWrapper(url, type, data, dataType, function(res) {
-				console.log(res);
-				return res;
-			});
+	/**
+	 *	Creates map of top genres
+	 *	Saves data in state for D3 to use
+	 */
+	getGenres: function() {
+		if(this.state.artistData.length > 0) {
+			var data = getGenreData(this.state.artistData);
+			if(data) {
+				this.setState({ 
+					genreData: data
+   			});
+			}
 		}
-		return '';
+	},
+	
+	submitGenres: function(genres) {
+		// Ajax helper function for REST api calls
+		// 3000 for local dev, 3001 for browser-sync
+		/*var baseURL = 'http://localhost:3001/api/music/genres';
+		for(var key in genres){
+			var data = { 
+				name: key,
+				value: genres[key],
+				peronality: 0
+			};
+			ajaxWrapper(url, 'POST', data, function(res) {
+				console.log(res);
+			});
+		}*/
+		var Genre = require('../models/Genre');
+		console.log(Genre.initGenre());
 	},
 	
   render: function() {	
-		
-		var api = 'test';
-		
 		return (
 			<div>
-				<Header submitUsername={this.submitUsernameAction} />
-				<Main test={api}/>
+				<AppHeader submitForm={this.getArtists}/>
+				<AppMain username={this.state.username} userhouse={this.state.userhouse} genreData={this.state.genreData}/>
 			</div>
 		)
+	}
 		
-  }
 });
 
 module.exports = MusicApp;

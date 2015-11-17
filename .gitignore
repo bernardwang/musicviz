@@ -38,4 +38,9 @@ Thumbs.db
 
 # Node dependancy directory
 node_modules
+
+# Sass and Compass cache directory
 .sass-cache
+
+# Word documents
+*.docx

@@ -12,7 +12,7 @@ var MusicApp = require('./components/MusicApp');
 // DOM node react component will be added to
 var mountNode = document.body;
 
-// Render the app, picking up where react left off on the server
+// Render the app to mountNode
 ReactDOM.render(
 	<MusicApp/>, mountNode
 );
