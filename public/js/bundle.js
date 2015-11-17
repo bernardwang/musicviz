@@ -288,6 +288,7 @@ var ajaxWrapper = require('./ajaxWrapper');
 
 /**
  *	AJAX call to get user top artists
+ * 	TODO: look into using Spotify API to get genre info
  */
 var userCall = function(username, limit, callback) {
 	var url = 'http://ws.audioscrobbler.com/2.0/';
@@ -319,7 +320,6 @@ var artistCall = function(artist, callback) {
 var getArtistData = function(username, callback) {
 	var result = [];
 	var limit = 20;
-	var that = this;
 	
 	userCall(username, limit, function(data) {
 		if(data.error) {
