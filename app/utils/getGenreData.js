@@ -4,6 +4,7 @@
 var getGenreData = function(artists) {
 	var result = {};
 	var totalPlays = 0;
+	
 	for(var i = 0; i < artists.length; i++) {
 		var artist = artists[i];
 		var genre = artist.genre[0].name;		// only first genre tag

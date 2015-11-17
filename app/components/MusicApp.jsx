@@ -17,7 +17,7 @@ var MusicApp = React.createClass({
 			username: '',
 			userhouse: '',
 			artistData: [],
-			genreData: []
+			genreData: {}
     };
   },
 	
@@ -44,7 +44,7 @@ var MusicApp = React.createClass({
 	 *	Saves data in state for D3 to use
 	 */
 	getGenres: function() {
-		if(this.state.artistData) {
+		if(this.state.artistData.length > 0) {
 			var data = getGenreData(this.state.artistData);
 			if(data) {
 				this.setState({ 
@@ -57,7 +57,7 @@ var MusicApp = React.createClass({
 	submitGenres: function(genres) {
 		// Ajax helper function for REST api calls
 		// 3000 for local dev, 3001 for browser-sync
-		var baseURL = 'http://localhost:3001/api/music/genres';
+		/*var baseURL = 'http://localhost:3001/api/music/genres';
 		for(var key in genres){
 			var data = { 
 				name: key,
@@ -67,7 +67,9 @@ var MusicApp = React.createClass({
 			ajaxWrapper(url, 'POST', data, function(res) {
 				console.log(res);
 			});
-		}
+		}*/
+		var Genre = require('../models/Genre');
+		console.log(Genre.initGenre());
 	},
 	
   render: function() {	

@@ -14,32 +14,27 @@ var GenreSchema = new Schema({
 	value				: { type: Number, default: 0 },			// total combined percentages
 	count				: { type: Number, default: 0 },			// total entries
 	personality	: [Personality],										// corresponding categories
-	category		: Number 														// number representing generalized genre category, not yet 
+	category		: Number 														// number representing generalized genre category, not yet used
 });
 
 /**
  * Stores or updates each genre to database
  */
-GenreSchema.statics.addGenre = function(err, data, callback) {
-	/*data.forEach(function(item){
-		genre.create({
-			name			: item.name,
-			value			: item.value,
-			count			: item.count,
-			houses		: []
-			order			: item.order,
-			revision	: item.revision,
-			msg				: item.msg,
-			date			: item.date,
-			changes		: item.changes,
-			comments	: []
-		}, function(err) {
-			if(err) {
-				callback(err);
-			}
-		});
-	});	
-	callback(null);*/
+GenreSchema.statics.initGenre = function(callback) {
+	var personality = [];
+	for(var i = 0; i < 4; i++) {
+		personality.push(Genre.personality.create());
+	}
+	
+	var result = new Genre({
+		name				: '',													
+		value				: 0,		
+		count				: 0,		
+		personality	: personality,									
+		category		: 0 	// currently unused												
+	});
+	
+	return result;
 };
 
 var Genre = mongoose.model('Genre', GenreSchema, 'MusicCollection');

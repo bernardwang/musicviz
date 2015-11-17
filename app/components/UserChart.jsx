@@ -6,12 +6,13 @@
 
 var React = require('react');
 var ajaxWrapper = require('../utils/ajaxWrapper');
+var isObjectEmpty = require('../utils/isObjectEmpty');
 var RadarChart = require('../utils/radarChart.js');
 
 var UserChart = React.createClass({
 	
 	componentDidUpdate: function() {
-		if(this.props.genreData) {
+		if(!isObjectEmpty(this.props.genreData)) {
 			var element = '.'+this.props.elementName;
 			var data = this.formatData();
 			var options = this.getChartOptions();
@@ -21,7 +22,6 @@ var UserChart = React.createClass({
 	
 	formatData: function(genres) {
 		var genres = this.props.genreData;
-		console.log(genres);
 		var result = [];
 		var layer = [];
 		
