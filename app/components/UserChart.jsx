@@ -5,51 +5,34 @@
 //
 
 var React = require('react');
-
+var ajaxWrapper = require('../utils/ajaxWrapper');
 var RadarChart = require('../utils/radarChart.js');
 
 var UserChart = React.createClass({
 	
 	componentDidUpdate: function() {
-		if(this.props.artistData.length > 0) {
+		if(this.props.genreData) {
 			var element = '.'+this.props.elementName;
-			var data = this.getChartData(this.props.artistData);
+			var data = this.formatData();
 			var options = this.getChartOptions();
 			RadarChart(element, data, options);
 		}
   },
 	
-	getChartData: function(artists) {
-		var result = [];	// final data radar chart accepts as input
-		var layer = [];	// single layer/color of data on chart
-		var genres = {};
-		var totalplays = 0;
+	formatData: function(genres) {
+		var genres = this.props.genreData;
+		console.log(genres);
+		var result = [];
+		var layer = [];
 		
-		// combines genre data from artists
-		for(var i = 0; i < artists.length; i++) {
-			var artist = artists[i];
-			var genre = artist.genre[0].name;		// for now getting first genre tag
-			genre = genre.toLowerCase().replace(/[\s-]+/g, ''); // normalize text
-			totalplays += parseInt(artist.plays);
-			if (genres[genre] === undefined){
-				genres[genre] = parseInt(artist.plays);
-			}
-			else {
-				genres[genre] += parseInt(artist.plays);
-			}
-		}
-		
-		// formats data for d3
 		for(var genre in genres) {
-			var percent = genres[genre]/totalplays;
-			if(percent >= 0.03) {
-				layer.push({
-					'axis': genre,
-					'value': percent
-				});
-			}
+			var percent = genres[genre];
+			layer.push({
+				'axis': genre,
+				'value': percent
+			});
 		}
-		
+	
 		// radar chart format: [[{},{}...{}]]
 		result.push(layer);
 		return result;

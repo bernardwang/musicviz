@@ -14,7 +14,7 @@ var Main = React.createClass({
 			
 		return (
 			<main>
-				<UserChart username={this.props.username} artistData={this.props.artistData} elementName={'userChart'}/>
+				<UserChart username={this.props.username} genreData={this.props.genreData} elementName={'userChart'}/>
 			</main>
 		)
 		
