@@ -40,7 +40,7 @@ var UserChart = React.createClass({
 	
 	getChartOptions: function() {
 		var margin = {top: 100, right: 100, bottom: 100, left: 100};
-		var width = Math.min(500, window.innerWidth - 10) - margin.left - margin.right;
+		var width = Math.min(650, window.innerWidth - 10) - margin.left - margin.right;
 		var height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
 		
 		// draws chart

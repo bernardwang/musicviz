@@ -28,7 +28,7 @@ var TotalChart = React.createClass({
 		for(var genre in genres) {
 			var percent = genres[genre];
 			layer.push({
-				'axis': genre,
+				'label': genre,
 				'value': percent
 			});
 		}
@@ -39,8 +39,8 @@ var TotalChart = React.createClass({
 	},
 	
 	getChartOptions: function() {
-		var margin = {top: 50, right: 50, bottom: 50, left: 50};
-		var width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right;
+		var margin = {top: 50, right: 50, bottom: 50, left: 80}; // to account for y axis labels
+		var width = Math.min(800, window.innerWidth - 10) - margin.left - margin.right;
 		var height = Math.min(600, window.innerHeight - margin.top - margin.bottom - 20);
 		
 		// draws chart

@@ -243,7 +243,7 @@ var TotalChart = React.createClass({displayName: "TotalChart",
 		for(var genre in genres) {
 			var percent = genres[genre];
 			layer.push({
-				'axis': genre,
+				'label': genre,
 				'value': percent
 			});
 		}
@@ -254,8 +254,8 @@ var TotalChart = React.createClass({displayName: "TotalChart",
 	},
 	
 	getChartOptions: function() {
-		var margin = {top: 50, right: 50, bottom: 50, left: 50};
-		var width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right;
+		var margin = {top: 50, right: 50, bottom: 50, left: 80}; // to account for y axis labels
+		var width = Math.min(800, window.innerWidth - 10) - margin.left - margin.right;
 		var height = Math.min(600, window.innerHeight - margin.top - margin.bottom - 20);
 		
 		// draws chart
@@ -332,7 +332,7 @@ var UserChart = React.createClass({displayName: "UserChart",
 	
 	getChartOptions: function() {
 		var margin = {top: 100, right: 100, bottom: 100, left: 100};
-		var width = Math.min(500, window.innerWidth - 10) - margin.left - margin.right;
+		var width = Math.min(650, window.innerWidth - 10) - margin.left - margin.right;
 		var height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
 		
 		// draws chart
@@ -565,22 +565,32 @@ var isObjectEmpty = function( obj ) {
 module.exports = isObjectEmpty;
 
 },{}],14:[function(require,module,exports){
-
+// 
+// 	lineChart.js
+//
+//	Adapted from RadarChart by Nadieh Bremer
+//
+	
 var lineChart = function(id, data, options) {
 	// default options
 	var cfg = {
-	 w: 800,				//Width of the chart
-	 h: 600,				//Height of the chart
-	 margin: {top: 20, right: 20, bottom: 20, left: 20}, //The margins of the SVG
-	 levels: 4,				//How many levels should there be drawn
-	 maxValue: 1, 			//What is the value that the biggest level will represent
-	 labelFactor: 1.25, 	//How much farther than the radius of the outer circle should the labels be placed
-	 wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
-	 opacityArea: 0.35, 	//The opacity of the area of the blob
-	 dotRadius: 4, 			//The size of the colored circles of each blog
-	 opacityCircles: 0.1, 	//The opacity of the circles of each blob
-	 strokeWidth: 2, 		//The width of the stroke around each blob
-	 roundStrokes: false,	//If true the area and stroke will follow a round path (cardinal-closed)
+	 w: 800,											// Width of the chart
+	 h: 600,											// Height of the chart
+	 margin: {										//The margins of the SVG
+		 top: 20, 
+		 right: 20, 
+		 bottom: 20, 
+		 left: 20
+	 },
+	 levels: 4,										// How many levels should there be drawn
+	 maxValue: 1, 								// What is the value that the biggest level will represent
+	 labelFactor: 1.25, 					// How much farther than the radius of the outer circle should the labels be placed
+	 wrapWidth: 60, 							// The number of pixels after which a label needs to be given a new line
+	 opacityArea: 0.35, 					// The opacity of the area of the blob
+	 dotRadius: 4, 								// The size of the colored circles of each blog
+	 opacityCircles: 0.1, 				// The opacity of the circles of each blob
+	 strokeWidth: 2, 							// The width of the stroke around each blob
+	 roundStrokes: false,					// If true the area and stroke will follow a round path (cardinal)
 	 color: d3.scale.category10()	//Color function
 	};
 	
@@ -594,17 +604,15 @@ var lineChart = function(id, data, options) {
 	//If the supplied maxValue is smaller than the actual one, replace by the max in the data
 	var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
 		
-	var allLabel = (data[0].map(function(i, j){return i.axis})),	//Names of each label
-		total = allLabel.length,					//The number of different labels
-		labelWidth = cfg.w/(total-1),
-		//labelHeight = cfg.h/total;
-	//	radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
-	Format = d3.format('%');			 	//Percentage formatting
-	//	angleSlice = Math.PI * 2 / total;		//The width in radians of each "slice"
+	var allLabels = (data[0].map(function(i, j){return i.label}));	// Names of each label
+	var numLabels = allLabels.length;				// The number of different labels
+	var widthLabel = cfg.w/(numLabels-1);		// numLabels-1 to fit entire width of chart
+	var Format = d3.format('%');			 			// Percentage formatting
 
+	// scale for height
 	var scale = d3.scale.linear()
-		.range([cfg.w,0])
-		.domain([0, maxValue]);
+		.range([cfg.h, 0])				// max height to 0, 0 is bottom of chart
+		.domain([0, maxValue]);		// scale to maxValue
 		
 	/////////////////////////////////////////////////////////
 	//////////// Create the container SVG and g /////////////
@@ -613,13 +621,13 @@ var lineChart = function(id, data, options) {
 	//Remove whatever chart with the same id/class was present before
 	d3.select(id).select("svg").remove();
 	
-	//Initiate the radar chart SVG
+	//Initiate the radar chart SVG with margins
 	var svg = d3.select(id).append("svg")
 			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
 			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
 			.attr("class", "line"+id);
 			
-	//Append a g element		
+	//Append a g element
 	var g = svg.append("g")
 			.attr("transform", "translate(" + (cfg.margin.left) + "," + (cfg.margin.top) + ")");
 	
@@ -627,63 +635,61 @@ var lineChart = function(id, data, options) {
 	////////// Glow filter for some extra pizzazz ///////////
 	/////////////////////////////////////////////////////////
 	
-	/*/Filter for the outside glow
+	//Filter for the outside glow
 	var filter = g.append('defs').append('filter').attr('id','glow'),
-		feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','coloredBlur'),
+		feGaussianBlur = 	filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','coloredBlur'),
 		feMerge = filter.append('feMerge'),
 		feMergeNode_1 = feMerge.append('feMergeNode').attr('in','coloredBlur'),
 		feMergeNode_2 = feMerge.append('feMergeNode').attr('in','SourceGraphic');
-*/
+
 	/////////////////////////////////////////////////////////
-	/////////////// Draw the Circular grid //////////////////
+	//////////////////// Draw the grid //////////////////////
 	/////////////////////////////////////////////////////////
 	
-	//Wrapper for the grid & axes
-	var labelGrid = g.append("g").attr("class", "labelWrapper");
+	// Wrapper for the grid
+	var gridWrapper = g.append("g").attr("class", "gridWrapper");
 
-	labelGrid.selectAll(".levels")
-	   .data(d3.range(1,(cfg.levels+1)).reverse())
-	   .enter()
-		.append("rect")
+	// Rectangles for each grid level
+	gridWrapper.selectAll(".gridWrapper")
+		.data(d3.range(1,(cfg.levels+1)).reverse())
+	  .enter().append("rect")
 		.attr("class", "gridRect")
 		.attr("x", 0)
 		.attr("y", function(d, i){return cfg.h/cfg.levels*(d-1);})
 		.attr("width", cfg.w)
 		.attr("height", cfg.h/cfg.levels)
-		//.attr("r", function(d, i){return radius/cfg.levels*d;})
 		.style("fill", "#CDCDCD")
 		.style("stroke", "#CDCDCD")
 		.style("fill-opacity", cfg.opacityCircles)
 		.style("filter" , "url(#glow)");
 
-	//Text indicating at what % each level is
-	labelGrid.selectAll(".labelText")
-	   .data(d3.range(1,(cfg.levels+1)))
-	   .enter().append("text")
-	   .attr("class", "labelText")
-	   .attr("x", -40)
-		 .attr("y", function(d){return (cfg.levels-d)*cfg.h/cfg.levels;})
-	   //.attr("y", function(d){return -d*radius/cfg.levels;})
-	   .attr("dy", "0.4em")
-	   .style("font-size", "10px")
-	   .attr("fill", "#737373")
-	   .text(function(d,i) { return Format(maxValue * d/cfg.levels); });
+	// Text indicating at what % each level is
+	gridWrapper.selectAll(".gridWrapper")
+		.data(d3.range(1,(cfg.levels+1)))
+		.enter().append("text")
+		.attr("class", "gridText")
+		.attr("x", -40)
+		.attr("y", function(d){return (cfg.levels-d)*cfg.h/cfg.levels;})
+		.attr("dy", "0.4em")
+		.style("font-size", "10px")
+		.attr("fill", "#737373")
+		.text(function(d,i) { return Format(maxValue * d/cfg.levels); });
 
 	/////////////////////////////////////////////////////////
 	//////////////////// Draw the axes //////////////////////
 	/////////////////////////////////////////////////////////
 	
-	var label = labelGrid.selectAll(".label")
-		.data(allLabel)
+	var gridLabel = gridWrapper.selectAll(".gridLabel")
+		.data(allLabels)
 		.enter();
 	
 	//Append the labels at each axis
-	label.append("text")
-		.attr("class", "legend")
+	gridLabel.append("text")
+		.attr("class", "gridLegend")
 		.style("font-size", "9px")
 		.attr("text-anchor", "middle")
 		.attr("dy", "0.35em")
-		.attr("x", function(d,i){ return i*labelWidth; })
+		.attr("x", function(d,i){ return i*widthLabel; })
 		.attr("y", function(d,i){ return cfg.h + 30; })
 		.text(function(d){ return d })
 		.call(wrap, cfg.wrapWidth);
@@ -692,46 +698,42 @@ var lineChart = function(id, data, options) {
 	///////////// Draw the radar chart blobs ////////////////
 	/////////////////////////////////////////////////////////
 	
+	// data line
 	var line = d3.svg.line()
-	.interpolate("linear-closed")
-		.x(function(d,i) { return i*labelWidth; })
+		.interpolate("linear-closed")
+		.x(function(d,i) { return i*widthLabel; })
     .y(function(d,i) { return scale(d.value); });	
 	
 	if(cfg.roundStrokes) {
 		line.interpolate("cardinal");
 	}
 				
-	//Create a wrapper for the blobs	
-	var blobWrapper = g.selectAll(".lineWrapper")
+	// Create a wrapper for the blobs	
+	var blobWrapper = g.selectAll(".blobWrapper")
 		.data(data)
 		.enter().append("g")
-		.attr("class", "lineWrapper")
+		.attr("class", ".blobWrapper")
 		.attr("x",0)
 		.attr("y",0)
 		.attr("width",cfg.w)
 		.attr("height",cfg.h);
 	
+	// area under line
+	var area = d3.svg.area()
+		.interpolate("cardinal")
+		.x(function(d,i) { return i*widthLabel; })
+		.y0(cfg.h)
+		.y1(function(d) { return scale(d.value); });
 	
-var area = d3.svg.area()
-	.interpolate("cardinal")
-	.x(function(d,i) { return i* labelWidth; })
-	.y0(cfg.h)
-	.y1(function(d) { return scale(d.value); });
-			
-	var blobWrapper = g.selectAll(".lineWrapper") 
-	
-	//Append the backgrounds	
-	blobWrapper
-		.append("path")
+	// Append area blobs
+	blobWrapper.append("path")
 		.attr("d", function(d,i) { return area(d,i); })
-		.attr("class", "lineArea")
-		//.attr("d", function(d,i) { return line(d); })
-	//.style("stroke", function(d,i) { return cfg.color(i); })
+		.attr("class", "lineBlob")
 		.style("fill", function(d,i) { return cfg.color(i); })
 		.style("fill-opacity", cfg.opacityArea)
 		.on('mouseover', function (d,i){
 			//Dim all blobs
-			d3.selectAll(".lineArea")
+			d3.selectAll(".lineBlob")
 				.transition().duration(200)
 				.style("fill-opacity", 0.1); 
 			//Bring back the hovered over blob
@@ -741,13 +743,12 @@ var area = d3.svg.area()
 		})
 		.on('mouseout', function(){
 			//Bring back all blobs
-			d3.selectAll(".lineArea")
+			d3.selectAll(".lineBlob")
 				.transition().duration(200)
 				.style("fill-opacity", cfg.opacityArea);
 		});
 		
-	
-	//Create the outlines	
+	// Create line paths
 	blobWrapper.append("path")
 		.attr("class", "lineStroke")
 		.attr("d", function(d,i) { return line(d,i); })
@@ -756,13 +757,13 @@ var area = d3.svg.area()
 		.style("fill", "none")
 		.style("filter" , "url(#glow)");		
 	
-	//Append the circles
+	// Append the data point circles and tooltip
 	blobWrapper.selectAll(".lineCircle")
 		.data(function(d,i) { return d; })
 		.enter().append("circle")
 		.attr("class", "lineCircle")
 		.attr("r", cfg.dotRadius)
-		.attr("cx", function(d,i){ return labelWidth*i })
+		.attr("cx", function(d,i){ return widthLabel*i })
 		.attr("cy", function(d,i){ return scale(d.value) })
 		.style("fill", function(d,i,j) { return cfg.color(j); })
 		.style("fill-opacity", 0.8)
@@ -782,15 +783,10 @@ var area = d3.svg.area()
 				tooltip.transition().duration(200)
 					.style("opacity", 0);
 			});
-
-	/////////////////////////////////////////////////////////
-	//////// Append invisible circles for tooltip ///////////
-	/////////////////////////////////////////////////////////
-
 	
 	//Set up the small tooltip for when you hover over a circle
 	var tooltip = g.append("text")
-		.attr("class", "tooltip")
+		.attr("class", "lineToolTip")
 		.style("opacity", 0);
 	
 	/////////////////////////////////////////////////////////
@@ -838,7 +834,6 @@ module.exports = lineChart;
 /////////////////////////////////////////////////////////
 	
 var RadarChart = function(id, data, options) {
-	// default options
 	var cfg = {
 	 w: 600,				//Width of the circle
 	 h: 600,				//Height of the circle
@@ -865,7 +860,7 @@ var RadarChart = function(id, data, options) {
 	//If the supplied maxValue is smaller than the actual one, replace by the max in the data
 	var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
 		
-	var allAxis = (data[0].map(function(i, j){return i.axis})),	//Names of each axis
+	var allAxis = (data[0].map(function(i, j){return i.label})),	//Names of each axis
 		total = allAxis.length,					//The number of different axes
 		radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
 		Format = d3.format('%'),			 	//Percentage formatting
