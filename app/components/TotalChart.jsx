@@ -1,22 +1,22 @@
 // 
-//  UserChart.jsx
+//  TotalChart.jsx
 //
-//	D3 radar chart for user genres
+//	D3 line chart for total collected data
 //
 
 var React = require('react');
 var ajaxWrapper = require('../utils/ajaxWrapper');
 var isObjectEmpty = require('../utils/isObjectEmpty');
-var RadarChart = require('../utils/radarChart.js');
+var LineChart = require('../utils/lineChart.js');
 
-var UserChart = React.createClass({
+var TotalChart = React.createClass({
 	
 	componentDidUpdate: function() {
 		if(!isObjectEmpty(this.props.genreData)) {
 			var element = '.'+this.props.elementName;
 			var data = this.formatData();
 			var options = this.getChartOptions();
-			RadarChart(element, data, options);
+			LineChart(element, data, options);
 		}
   },
 	
@@ -39,9 +39,9 @@ var UserChart = React.createClass({
 	},
 	
 	getChartOptions: function() {
-		var margin = {top: 100, right: 100, bottom: 100, left: 100};
-		var width = Math.min(500, window.innerWidth - 10) - margin.left - margin.right;
-		var height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
+		var margin = {top: 50, right: 50, bottom: 50, left: 50};
+		var width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right;
+		var height = Math.min(600, window.innerHeight - margin.top - margin.bottom - 20);
 		
 		// draws chart
 		var color = d3.scale.ordinal()
@@ -72,4 +72,4 @@ var UserChart = React.createClass({
   }
 });
 
-module.exports = UserChart;
+module.exports = TotalChart;
