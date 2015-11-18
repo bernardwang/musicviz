@@ -100,12 +100,14 @@ module.exports = AppHeader;
 //
 
 var React = require('react');
+
 var UserChart = require('./UserChart');
 var TotalChart = require('./TotalChart');
 
 var Main = React.createClass({displayName: "Main",
 	
   render: function() {
+			
 		// Will not display title until data is submitted
 		var UserTitle = (this.props.username) ? this.props.username+"'s Top Genres" : '';
 		var TotalTitle = (this.props.username) ? "Current Top Genres" : '';
