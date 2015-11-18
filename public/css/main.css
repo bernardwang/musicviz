@@ -15,6 +15,11 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
+/* line 22, ../../app/styles/sass/base/_base.scss */
+hr {
+  border-style: solid;
+}
+
 /* line 26, ../../app/styles/sass/base/_base.scss */
 a {
   text-decoration: none;
