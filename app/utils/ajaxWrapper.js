@@ -8,7 +8,8 @@ var ajaxWrapper = function(url, type, data, dataType, callback) {
 		dataType: dataType,
     success: callback,
 		error: function(request, status, errorThrow) {
-			console.log('API call error');	
+			console.log('AJAX call error');	
+			console.log(errorThrow+", "+status);
 		}
 	});
 }

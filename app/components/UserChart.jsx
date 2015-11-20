@@ -28,7 +28,7 @@ var UserChart = React.createClass({
 		for(var genre in genres) {
 			var percent = genres[genre];
 			layer.push({
-				'axis': genre,
+				'label': genre,
 				'value': percent
 			});
 		}

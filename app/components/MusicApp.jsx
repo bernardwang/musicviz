@@ -5,6 +5,7 @@
 //
 
 var React = require('react');
+var ajaxWrapper = require('../utils/ajaxWrapper.js');
 var getArtistData = require('../utils/getArtistData.js');
 var getGenreData = require('../utils/getGenreData.js');
 var AppHeader = require('./AppHeader');
@@ -50,26 +51,35 @@ var MusicApp = React.createClass({
 				this.setState({ 
 					genreData: data
    			});
+				this.getAPI();
+				//this.submitAPI(data);
 			}
 		}
 	},
 	
-	submitGenres: function(genres) {
-		// Ajax helper function for REST api calls
-		// 3000 for local dev, 3001 for browser-sync
-		/*var baseURL = 'http://localhost:3001/api/music/genres';
+	// temporary function to test api get
+	getAPI: function(genres) {
+		// 3001 for browsersync
+		var url = 'http://localhost:3001/api/music/genres';
+			ajaxWrapper(url, 'GET', null,'json',function(res) {
+				console.log(res);
+			});
+	},
+	
+	// temporary function to test api post
+	submitAPI: function(genres) {
+		// 3001 for browsersync
+		var url = 'http://localhost:3001/api/music/genres';
 		for(var key in genres){
 			var data = { 
 				name: key,
 				value: genres[key],
-				peronality: 0
+				personality: 0
 			};
-			ajaxWrapper(url, 'POST', data, function(res) {
+			ajaxWrapper(url, 'POST', data,'json',function(res) {
 				console.log(res);
 			});
-		}*/
-		var Genre = require('../models/Genre');
-		console.log(Genre.initGenre());
+		}
 	},
 	
   render: function() {	

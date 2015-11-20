@@ -21,18 +21,21 @@ var GenreSchema = new Schema({
  * Stores or updates each genre to database
  */
 GenreSchema.statics.initGenre = function(callback) {
-	var personality = [];
-	for(var i = 0; i < 4; i++) {
-		personality.push(Genre.personality.create());
-	}
 	
 	var result = new Genre({
 		name				: '',													
 		value				: 0,		
 		count				: 0,		
-		personality	: personality,									
+		personality	: [],									
 		category		: 0 	// currently unused												
 	});
+	
+	for(var i = 0; i < 4; i++) {
+		result.personality.push(result.personality.create({
+			value: 0,
+			count: 0
+		}));
+	}
 	
 	return result;
 };

@@ -20,12 +20,12 @@ var ArtistSchema = new Schema({
  * Stores or updates each genre to database
  */
 ArtistSchema.statics.addArtist = function(err, data, callback) {
-	/*data.forEach(function(item){
+	data.forEach(function(item){
 		genre.create({
 			name		: String,
 			value		: Number,
 			count		: Number,
-			houses	: [Personality]
+			houses	: [Personality],
 			order			: item.order,
 			revision	: item.revision,
 			msg				: item.msg,
@@ -38,7 +38,7 @@ ArtistSchema.statics.addArtist = function(err, data, callback) {
 			}
 		});
 	});	
-	callback(null);*/
+	callback(null);
 };
 
 var Artist = mongoose.model('Artist', ArtistSchema, 'MusicCollection');
