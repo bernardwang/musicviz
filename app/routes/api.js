@@ -24,6 +24,7 @@ module.exports = function(app) {
 	
 	/**
 	 *		POST - add genre data
+	 *		TODO allow list of genres to be added with one ajax call
 	 */
 	app.post('/api/music/genres', function(req, res) {
 		console.log('POST');

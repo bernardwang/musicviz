@@ -18,7 +18,7 @@ var GenreSchema = new Schema({
 });
 
 /**
- * Stores or updates each genre to database
+ * Stores and updates a genre to database
  */
 GenreSchema.statics.initGenre = function(callback) {
 	
@@ -38,6 +38,15 @@ GenreSchema.statics.initGenre = function(callback) {
 	}
 	
 	return result;
+};
+
+/**
+ * Deletes entire database contents
+ */
+GenreSchema.statics.deleteCommits = function(err, callback) {
+	console.log('DELETE ALL');
+	Genre.find().remove().exec(); // nukes db, pretty lazy
+	callback(null);
 };
 
 var Genre = mongoose.model('Genre', GenreSchema, 'MusicCollection');
