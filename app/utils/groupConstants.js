@@ -1,3 +1,9 @@
+// 
+// 	groupConstants.js
+//
+//	Constants used for choosing genre group
+//
+
 var CONST = {
 	
 	'GENRES_MAX': 20,

@@ -377,6 +377,12 @@ var UserChart = React.createClass({displayName: "UserChart",
 module.exports = UserChart;
 
 },{"../utils/ajaxWrapper":8,"../utils/isObjectEmpty":11,"../utils/radarChart.js":13,"react":173}],8:[function(require,module,exports){
+//
+//	ajaxWrapper.js
+//	
+//	Convienent wrapper function
+//
+
 var $ = require('jQuery');
 
 var ajaxWrapper = function(url, type, data, dataType, callback) {
@@ -500,9 +506,11 @@ var getGenreData = function(artists) {
 module.exports = getGenreData;
 
 },{}],11:[function(require,module,exports){
-/**
- *	Probably overkill modularizing lol
- */
+//
+//	isObjectEmpty.js
+//	
+//	Probably overkill modularizing lol
+//
  
 var isObjectEmpty = function( obj ) { 
   for ( var prop in obj ) { 

@@ -1,3 +1,9 @@
+//
+//	ajaxWrapper.js
+//	
+//	Convienent wrapper function
+//
+
 var $ = require('jQuery');
 
 var ajaxWrapper = function(url, type, data, dataType, callback) {

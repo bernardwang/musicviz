@@ -1,3 +1,9 @@
+// 
+// 	groupGenre.js
+//
+//	Generalize Last.fm genres into specified categories with tasteometer
+//
+
 var async = require('async');
 var ajaxWrapper = require('./ajaxWrapper');
 var CONST = require('./selectConstants');
