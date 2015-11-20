@@ -402,6 +402,12 @@ var ajaxWrapper = function(url, type, data, dataType, callback) {
 module.exports = ajaxWrapper;
 
 },{"jQuery":16}],9:[function(require,module,exports){
+//
+//	getArtistData.js
+//	
+//	Gets a list of top artists from a Last.fm user
+//
+
 var async = require('async');
 var ajaxWrapper = require('./ajaxWrapper');
 
@@ -472,6 +478,12 @@ var getArtistData = function(username, callback) {
 module.exports = getArtistData;
 
 },{"./ajaxWrapper":8,"async":14}],10:[function(require,module,exports){
+//
+//	getGenreData.js
+//	
+//	Combines list of artists into list of genres
+//
+
 /**
  *	Creates map of top genres from list of top artists
  */

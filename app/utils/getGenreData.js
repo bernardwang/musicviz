@@ -1,3 +1,9 @@
+//
+//	getGenreData.js
+//	
+//	Combines list of artists into list of genres
+//
+
 /**
  *	Creates map of top genres from list of top artists
  */

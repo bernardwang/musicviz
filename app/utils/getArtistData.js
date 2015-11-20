@@ -1,3 +1,9 @@
+//
+//	getArtistData.js
+//	
+//	Gets a list of top artists from a Last.fm user
+//
+
 var async = require('async');
 var ajaxWrapper = require('./ajaxWrapper');
 
