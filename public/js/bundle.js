@@ -29,26 +29,44 @@ var React = require('react');
 
 var Form = React.createClass({displayName: "Form",
 	
+	getInitialState: function() {
+    return {
+      userhouse: ''
+    };
+  },
+	
 	onSubmit: function(event) {
 		event.preventDefault();
 	  var username = this.refs.username.value.trim();
-		if(username){
-			this.props.submitForm(username, "Slytherin"); // hardcoded in for now
+		var house = this.state.personality;
+		if(username && house){
+			this.props.submitForm(username, house); // hardcoded in for now
 		}
 		this.refs.username.value = '';
 	},
 
-  render: function() {
+	selectButton: function(event) {
+		var buttons = document.getElementById('input-house').children;
+		for(var i = 0; i < buttons.length; i++) {
+			var classname = (buttons[i]==event.target) ? 'selected' : '';
+			buttons[i].className = classname;
+		}
+		this.setState({
+			userhouse: event.target.innerHTML	
+		});
+	},
 
+  render: function() {
+		
 		return (
-			React.createElement("form", {onSubmit: this.onSubmit}, 
-				React.createElement("div", null, 
-					React.createElement("button", null, "Gryffindor"), 
-					React.createElement("button", null, "Hufflepuff"), 
-					React.createElement("button", null, "Ravenclaw"), 
-					React.createElement("button", null, "Slytherin")
+			React.createElement("form", {className: 'input-form', onSubmit: this.onSubmit}, 
+				React.createElement("div", {id: 'input-house'}, 
+					React.createElement("button", {onClick: this.selectButton}, "Gryffindor"), 
+					React.createElement("button", {onClick: this.selectButton}, "Hufflepuff"), 
+					React.createElement("button", {onClick: this.selectButton}, "Ravenclaw"), 
+					React.createElement("button", {onClick: this.selectButton}, "Slytherin")
 				), 
-				React.createElement("input", {className: "username", placeholder: "Enter your Last.fm username", ref: "username", type: "text"})
+				React.createElement("input", {className: "input-username", placeholder: "Enter your Last.fm username", ref: "username", type: "text"})
 			)
 		)
 		
@@ -68,15 +86,6 @@ var React = require('react');
 var AppForm = require('./AppForm');
 
 var AppHeader = React.createClass({displayName: "AppHeader",
-	
-	onSubmit: function(event) {
-		event.preventDefault();
-	  var username = this.refs.username.value.trim();
-		if(username){
-			this.props.submitForm(username, "Slytherin"); // hardcoded in for now
-		}
-		this.refs.username.value = '';
-	},
 
   render: function() {
 
@@ -178,8 +187,8 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 				this.setState({ 
 					genreData: data
    			});
-				this.getAPI();
-				//this.submitAPI(data);
+				//this.getAPI();
+				this.submitAPI(data);
 			}
 		}
 	},
@@ -592,9 +601,9 @@ var lineChart = function(id, data, options) {
 	
 	//Initiate the radar chart SVG with margins
 	var svg = d3.select(id).append("svg")
-			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
-			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
-			.attr("class", "line"+id);
+		.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
+		.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+		.attr("class", "line"+id);
 			
 	//Append a g element
 	var g = svg.append("g")

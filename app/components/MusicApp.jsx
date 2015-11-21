@@ -51,8 +51,8 @@ var MusicApp = React.createClass({
 				this.setState({ 
 					genreData: data
    			});
-				this.getAPI();
-				//this.submitAPI(data);
+				//this.getAPI();
+				this.submitAPI(data);
 			}
 		}
 	},

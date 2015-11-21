@@ -56,9 +56,9 @@ var lineChart = function(id, data, options) {
 	
 	//Initiate the radar chart SVG with margins
 	var svg = d3.select(id).append("svg")
-			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
-			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
-			.attr("class", "line"+id);
+		.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
+		.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
+		.attr("class", "line"+id);
 			
 	//Append a g element
 	var g = svg.append("g")
