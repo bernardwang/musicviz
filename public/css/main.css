@@ -52,26 +52,29 @@ header .title {
 .input-form {
   margin-top: 4rem;
 }
-
-/* line 6, ../../app/styles/sass/components/_AppForm.scss */
-#input-house button {
+/* line 4, ../../app/styles/sass/components/_AppForm.scss */
+.input-form button {
   margin: 2rem;
   padding: 2rem;
   border: 0;
   border-radius: 1rem;
   background-color: rgba(0, 0, 0, 0.1);
   color: white;
+  -moz-transition: opacity, ease-out 0.2s;
+  -o-transition: opacity, ease-out 0.2s;
+  -webkit-transition: opacity, ease-out 0.2s;
+  transition: opacity, ease-out 0.2s;
 }
 /* line 16, ../../app/styles/sass/components/_AppForm.scss */
-#input-house button:hover {
+.input-form button:hover {
   background-color: transparent;
 }
 /* line 20, ../../app/styles/sass/components/_AppForm.scss */
-#input-house button.selected {
+.input-form button.selected {
   background-color: transparent;
 }
 
-/* line 26, ../../app/styles/sass/components/_AppForm.scss */
+/* line 32, ../../app/styles/sass/components/_AppForm.scss */
 .input-username {
   width: 100%;
   height: 5rem;

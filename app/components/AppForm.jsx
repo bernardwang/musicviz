@@ -16,12 +16,11 @@ var Form = React.createClass({
 	
 	onSubmit: function(event) {
 		event.preventDefault();
-	  var username = this.refs.username.value.trim();
-		var house = this.state.personality;
-		if(username && house){
-			this.props.submitForm(username, house); // hardcoded in for now
+	  var name = this.refs.username.value.trim();
+		var house = this.state.userhouse;
+		if(name && house){
+			this.props.submitForm(name, house); // hardcoded in for now
 		}
-		this.refs.username.value = '';
 	},
 
 	selectButton: function(event) {
@@ -40,12 +39,13 @@ var Form = React.createClass({
 		return (
 			<form className={'input-form'} onSubmit={this.onSubmit}>
 				<div id={'input-house'}>
-					<button onClick={this.selectButton}>Gryffindor</button>
-					<button onClick={this.selectButton}>Hufflepuff</button>
-					<button onClick={this.selectButton}>Ravenclaw</button>
-					<button onClick={this.selectButton}>Slytherin</button>
+					<button type="button" onClick={this.selectButton}>Gryffindor</button>
+					<button type="button" onClick={this.selectButton}>Hufflepuff</button>
+					<button type="button" onClick={this.selectButton}>Ravenclaw</button>
+					<button type="button" onClick={this.selectButton}>Slytherin</button>
 				</div>
-				<input className='input-username' placeholder='Enter your Last.fm username' ref='username' type='text'/>
+				<input className={'input-username'} placeholder='Enter your Last.fm username' ref='username' type='text'/>
+				<button className={'input-submit'} type="submit">Submit Data!</button>
 			</form>
 		)
 		

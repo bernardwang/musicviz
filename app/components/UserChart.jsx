@@ -5,9 +5,10 @@
 //
 
 var React = require('react');
+var RadarChart = require('../utils/radarChart.js');
+
 var ajaxWrapper = require('../utils/ajaxWrapper');
 var isObjectEmpty = require('../utils/isObjectEmpty');
-var RadarChart = require('../utils/radarChart.js');
 
 var UserChart = React.createClass({
 	

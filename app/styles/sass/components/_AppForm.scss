@@ -1,8 +1,6 @@
 .input-form{
 	margin-top: spacing(2);
-}
-
-#input-house{
+	
 	button{
 		margin: spacing(0);
 		padding: spacing(0);
@@ -13,6 +11,8 @@
 		background-color: rgba(0, 0, 0, .1);
 		color: white;
 		
+		@include transition(opacity, .2s ease-out);
+		
 		&:hover{
 			background-color: rgba(0, 0, 0, 0);
 		}
@@ -20,6 +20,12 @@
 		&.selected{
 			background-color: rgba(0, 0, 0, 0);
 		}
+	}
+}
+
+#input-house{
+	button{
+
 	}
 }
 
@@ -41,3 +47,7 @@
   	color: white;
 	};
 }	
+
+.input-submit{
+	
+}

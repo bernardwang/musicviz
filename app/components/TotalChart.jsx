@@ -5,9 +5,10 @@
 //
 
 var React = require('react');
+var LineChart = require('../utils/lineChart.js');
+
 var ajaxWrapper = require('../utils/ajaxWrapper');
 var isObjectEmpty = require('../utils/isObjectEmpty');
-var LineChart = require('../utils/lineChart.js');
 
 var TotalChart = React.createClass({
 	

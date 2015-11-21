@@ -5,7 +5,6 @@
 //
 
 var React = require('react');
-
 var UserChart = require('./UserChart');
 var TotalChart = require('./TotalChart');
 

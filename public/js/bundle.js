@@ -37,12 +37,11 @@ var Form = React.createClass({displayName: "Form",
 	
 	onSubmit: function(event) {
 		event.preventDefault();
-	  var username = this.refs.username.value.trim();
-		var house = this.state.personality;
-		if(username && house){
-			this.props.submitForm(username, house); // hardcoded in for now
+	  var name = this.refs.username.value.trim();
+		var house = this.state.userhouse;
+		if(name && house){
+			this.props.submitForm(name, house); // hardcoded in for now
 		}
-		this.refs.username.value = '';
 	},
 
 	selectButton: function(event) {
@@ -61,12 +60,13 @@ var Form = React.createClass({displayName: "Form",
 		return (
 			React.createElement("form", {className: 'input-form', onSubmit: this.onSubmit}, 
 				React.createElement("div", {id: 'input-house'}, 
-					React.createElement("button", {onClick: this.selectButton}, "Gryffindor"), 
-					React.createElement("button", {onClick: this.selectButton}, "Hufflepuff"), 
-					React.createElement("button", {onClick: this.selectButton}, "Ravenclaw"), 
-					React.createElement("button", {onClick: this.selectButton}, "Slytherin")
+					React.createElement("button", {type: "button", onClick: this.selectButton}, "Gryffindor"), 
+					React.createElement("button", {type: "button", onClick: this.selectButton}, "Hufflepuff"), 
+					React.createElement("button", {type: "button", onClick: this.selectButton}, "Ravenclaw"), 
+					React.createElement("button", {type: "button", onClick: this.selectButton}, "Slytherin")
 				), 
-				React.createElement("input", {className: "input-username", placeholder: "Enter your Last.fm username", ref: "username", type: "text"})
+				React.createElement("input", {className: 'input-username', placeholder: "Enter your Last.fm username", ref: "username", type: "text"}), 
+				React.createElement("button", {className: 'input-submit', type: "submit"}, "Submit Data!")
 			)
 		)
 		
@@ -109,7 +109,6 @@ module.exports = AppHeader;
 //
 
 var React = require('react');
-
 var UserChart = require('./UserChart');
 var TotalChart = require('./TotalChart');
 
@@ -141,11 +140,12 @@ module.exports = Main;
 //
 
 var React = require('react');
+var AppHeader = require('./AppHeader');
+var AppMain = require('./AppMain');
+
 var ajaxWrapper = require('../utils/ajaxWrapper.js');
 var getArtistData = require('../utils/getArtistData.js');
 var getGenreData = require('../utils/getGenreData.js');
-var AppHeader = require('./AppHeader');
-var AppMain = require('./AppMain');
 
 var MusicApp = React.createClass({displayName: "MusicApp",
 	
@@ -239,9 +239,10 @@ module.exports = MusicApp;
 //
 
 var React = require('react');
+var LineChart = require('../utils/lineChart.js');
+
 var ajaxWrapper = require('../utils/ajaxWrapper');
 var isObjectEmpty = require('../utils/isObjectEmpty');
-var LineChart = require('../utils/lineChart.js');
 
 var TotalChart = React.createClass({displayName: "TotalChart",
 	
@@ -316,9 +317,10 @@ module.exports = TotalChart;
 //
 
 var React = require('react');
+var RadarChart = require('../utils/radarChart.js');
+
 var ajaxWrapper = require('../utils/ajaxWrapper');
 var isObjectEmpty = require('../utils/isObjectEmpty');
-var RadarChart = require('../utils/radarChart.js');
 
 var UserChart = React.createClass({displayName: "UserChart",
 	

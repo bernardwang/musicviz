@@ -5,11 +5,12 @@
 //
 
 var React = require('react');
+var AppHeader = require('./AppHeader');
+var AppMain = require('./AppMain');
+
 var ajaxWrapper = require('../utils/ajaxWrapper.js');
 var getArtistData = require('../utils/getArtistData.js');
 var getGenreData = require('../utils/getGenreData.js');
-var AppHeader = require('./AppHeader');
-var AppMain = require('./AppMain');
 
 var MusicApp = React.createClass({
 	
@@ -74,7 +75,7 @@ var MusicApp = React.createClass({
 			var data = { 
 				name: key,
 				value: genres[key],
-				personality: 0
+				personality: this.state.userhouse
 			};
 			ajaxWrapper(url, 'POST', data,'json',function(res) {
 				console.log(res);
