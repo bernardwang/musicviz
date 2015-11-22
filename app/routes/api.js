@@ -15,12 +15,16 @@ module.exports = function(app) {
 	app.get('/api/music/genres', function(req, res) {
     console.log('GET');
 		
-		Genre.find(function(err, genres) {
+		Genre
+		.find({})
+		.sort({ value: -1 })
+		.limit(20)
+		.exec(function(err, genres) {
     	if(err)
     	    res.send(err);
     	res.json(genres); 
     });
-  });
+	});
 	
 	/**
 	 *		POST - add genre data
@@ -45,8 +49,9 @@ module.exports = function(app) {
 			genre.count += 1;
 			
 			// Set specific personality value and count
-			genre.personality[req.body.personality].value += parseInt(req.body.value);
-			genre.personality[req.body.personality].count += 1;
+			var personalityIndex = Genre.PERSONALITY_CONST[req.body.personality];
+			genre.personality[personalityIndex].value += parseInt(req.body.value);
+			genre.personality[personalityIndex].count += 1;
 			
 			// Save result to database
 			genre.save(function(err) {

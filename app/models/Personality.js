@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PersonalitySchema = new Schema({
-	//name		: String,
+	//name		: String,		// instead of keeping track of personality by name, use constants defined in Genre
 	value		: { type: Number, default: 0 },	
 	count		: { type: Number, default: 0 },	
 });

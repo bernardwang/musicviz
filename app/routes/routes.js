@@ -11,7 +11,7 @@ var Babel = require('babel/register');
 var Genre = require('../models/Genre');	
 var Artist = require('../models/Artist');	
 
-//Genre.deleteCommits(null,function() {});
+Genre.deleteCommits(null,function() {});
 
 var routes = {
 	index: function(req, res) {

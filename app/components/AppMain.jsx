@@ -13,13 +13,13 @@ var Main = React.createClass({
   render: function() {
 			
 		// Will not display title until data is submitted
-		var UserTitle = (this.props.username) ? this.props.username+"'s Top Genres" : '';
-		var TotalTitle = (this.props.username) ? "Current Top Genres" : '';
+		var UserTitle = (this.props.name) ? this.props.name+"'s Top Genres" : '';
+		var TotalTitle = (this.props.name) ? "Current Top Genres" : '';
 		
 		return (
 			<main>
-				<UserChart title={UserTitle} genreData={this.props.genreData} elementName={'userChart'}/>
-				<TotalChart title={TotalTitle} genreData={this.props.genreData} elementName={'totalChart'}/>
+				<UserChart title={UserTitle} data={this.props.userGenres} elementName={'userChart'}/>
+				<TotalChart title={TotalTitle} data={this.props.totalGenres} elementName={'totalChart'}/>
 			</main>
 		)
 		

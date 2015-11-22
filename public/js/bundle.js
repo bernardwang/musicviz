@@ -117,13 +117,13 @@ var Main = React.createClass({displayName: "Main",
   render: function() {
 			
 		// Will not display title until data is submitted
-		var UserTitle = (this.props.username) ? this.props.username+"'s Top Genres" : '';
-		var TotalTitle = (this.props.username) ? "Current Top Genres" : '';
+		var UserTitle = (this.props.name) ? this.props.name+"'s Top Genres" : '';
+		var TotalTitle = (this.props.name) ? "Current Top Genres" : '';
 		
 		return (
 			React.createElement("main", null, 
-				React.createElement(UserChart, {title: UserTitle, genreData: this.props.genreData, elementName: 'userChart'}), 
-				React.createElement(TotalChart, {title: TotalTitle, genreData: this.props.genreData, elementName: 'totalChart'})
+				React.createElement(UserChart, {title: UserTitle, data: this.props.userGenres, elementName: 'userChart'}), 
+				React.createElement(TotalChart, {title: TotalTitle, data: this.props.totalGenres, elementName: 'totalChart'})
 			)
 		)
 		
@@ -151,27 +151,30 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 	
 	getInitialState: function() {
     return {
-			username: '',
-			userhouse: '',
-			artistData: [],
-			genreData: {}
+			name: '',
+			house: '',
+			userGenres: {},
+			totalGenres: {}
     };
   },
+	
+	componentDidMount: function() {
+		this.getGenres();	
+	},
 	
 	/**
 	 *	Gets array of top artists from Lastfm user profile
 	 *	Saves data in state for D3 to use
 	 */
-	getArtists: function(username, userhouse) {
-		var that = this;
-		getArtistData(username, function(data){
-			if(data) { // no errors, valid result
+	submitUserInfo: function(name, house) {
+		var that = this;		//fix later
+		getArtistData(name, function(artistData){
+			if(artistData) { // no errors, valid result
 				that.setState({ 
-					username: username,
-					userhouse: userhouse,
-					artistData: data
+					name: name,
+					house: house,
    			});
-				that.getGenres();
+				that.createUserData(artistData);
 			}
 		});
   },
@@ -180,40 +183,43 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 	 *	Creates map of top genres
 	 *	Saves data in state for D3 to use
 	 */
-	getGenres: function() {
-		if(this.state.artistData.length > 0) {
-			var data = getGenreData(this.state.artistData);
-			if(data) {
-				this.setState({ 
-					genreData: data
+	createUserData: function(artistData) {
+		var that = this;		//fix later
+		getGenreData(artistData, function(genreData) {
+			if(genreData) { // valid result
+				that.setState({ 
+					userGenres: genreData
    			});
-				//this.getAPI();
-				this.submitAPI(data);
+				that.submitGenres(genreData);		// update database 
 			}
-		}
+		});
 	},
 	
 	// temporary function to test api get
-	getAPI: function(genres) {
+	getGenres: function() {
 		// 3001 for browsersync
+		var that = this;		//fix later
 		var url = 'http://localhost:3001/api/music/genres';
-			ajaxWrapper(url, 'GET', null,'json',function(res) {
-				console.log(res);
+			ajaxWrapper(url, 'GET', null,'json', function(res) {
+				that.setState({ 
+					totalGenres: res
+   			});
 			});
 	},
 	
 	// temporary function to test api post
-	submitAPI: function(genres) {
+	submitGenres: function(genres) {
 		// 3001 for browsersync
+		var that = this;		//fix later
 		var url = 'http://localhost:3001/api/music/genres';
 		for(var key in genres){
 			var data = { 
 				name: key,
 				value: genres[key],
-				personality: 0
+				personality: this.state.house
 			};
-			ajaxWrapper(url, 'POST', data,'json',function(res) {
-				console.log(res);
+			ajaxWrapper(url, 'POST', data,'json', function(res) {
+				//console.log(res);
 			});
 		}
 	},
@@ -221,8 +227,8 @@ var MusicApp = React.createClass({displayName: "MusicApp",
   render: function() {	
 		return (
 			React.createElement("div", null, 
-				React.createElement(AppHeader, {submitForm: this.getArtists}), 
-				React.createElement(AppMain, {username: this.state.username, userhouse: this.state.userhouse, genreData: this.state.genreData})
+				React.createElement(AppHeader, {submitForm: this.submitUserInfo}), 
+				React.createElement(AppMain, {name: this.state.name, house: this.state.house, userGenres: this.state.userGenres, totalGenres: this.state.totalGenres})
 			)
 		)
 	}
@@ -247,7 +253,7 @@ var isObjectEmpty = require('../utils/isObjectEmpty');
 var TotalChart = React.createClass({displayName: "TotalChart",
 	
 	componentDidUpdate: function() {
-		if(!isObjectEmpty(this.props.genreData)) {
+		if(!isObjectEmpty(this.props.data)) {
 			var element = '.'+this.props.elementName;
 			var data = this.formatData();
 			var options = this.getChartOptions();
@@ -256,7 +262,7 @@ var TotalChart = React.createClass({displayName: "TotalChart",
   },
 	
 	formatData: function(genres) {
-		var genres = this.props.genreData;
+		var genres = this.props.data;
 		var result = [];
 		var layer = [];
 		
@@ -325,7 +331,7 @@ var isObjectEmpty = require('../utils/isObjectEmpty');
 var UserChart = React.createClass({displayName: "UserChart",
 	
 	componentDidUpdate: function() {
-		if(!isObjectEmpty(this.props.genreData)) {
+		if(!isObjectEmpty(this.props.data)) {
 			var element = '.'+this.props.elementName;
 			var data = this.formatData();
 			var options = this.getChartOptions();
@@ -334,7 +340,7 @@ var UserChart = React.createClass({displayName: "UserChart",
   },
 	
 	formatData: function(genres) {
-		var genres = this.props.genreData;
+		var genres = this.props.data;
 		var result = [];
 		var layer = [];
 		
@@ -480,6 +486,9 @@ var getArtistData = function(username, callback) {
 				});
 			},
 			function(err){
+				if(err) {
+					callback(null);	
+				}
 				callback(result);
  			}	
 		);
@@ -498,7 +507,7 @@ module.exports = getArtistData;
 /**
  *	Creates map of top genres from list of top artists
  */
-var getGenreData = function(artists) {
+var getGenreData = function(artists, callback) {
 	var result = {};
 	var totalPlays = 0;
 	
@@ -523,7 +532,7 @@ var getGenreData = function(artists) {
 		}
 	}
 
-	return result;
+	callback(result);
 }
 
 module.exports = getGenreData;

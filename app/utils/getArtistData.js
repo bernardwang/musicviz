@@ -65,6 +65,9 @@ var getArtistData = function(username, callback) {
 				});
 			},
 			function(err){
+				if(err) {
+					callback(null);	
+				}
 				callback(result);
  			}	
 		);

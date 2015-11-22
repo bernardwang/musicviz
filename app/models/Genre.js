@@ -18,7 +18,17 @@ var GenreSchema = new Schema({
 });
 
 /**
- * Stores and updates a genre to database
+ *	Map to get corresponding personality index
+ */
+GenreSchema.statics.PERSONALITY_CONST = {
+	'Gryffindor' : 0,
+	'Hufflepuff' : 1,
+	'Ravenclaw' : 2,
+	'Slytherin' : 3
+};
+
+/**
+ *	Stores and updates a genre to database
  */
 GenreSchema.statics.initGenre = function(callback) {
 	
@@ -41,7 +51,7 @@ GenreSchema.statics.initGenre = function(callback) {
 };
 
 /**
- * Deletes entire database contents
+ *	Deletes entire database contents
  */
 GenreSchema.statics.deleteCommits = function(err, callback) {
 	console.log('DELETE ALL');

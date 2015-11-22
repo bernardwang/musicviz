@@ -13,7 +13,7 @@ var isObjectEmpty = require('../utils/isObjectEmpty');
 var TotalChart = React.createClass({
 	
 	componentDidUpdate: function() {
-		if(!isObjectEmpty(this.props.genreData)) {
+		if(!isObjectEmpty(this.props.data)) {
 			var element = '.'+this.props.elementName;
 			var data = this.formatData();
 			var options = this.getChartOptions();
@@ -22,7 +22,7 @@ var TotalChart = React.createClass({
   },
 	
 	formatData: function(genres) {
-		var genres = this.props.genreData;
+		var genres = this.props.data;
 		var result = [];
 		var layer = [];
 		

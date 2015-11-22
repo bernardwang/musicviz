@@ -7,7 +7,7 @@
 /**
  *	Creates map of top genres from list of top artists
  */
-var getGenreData = function(artists) {
+var getGenreData = function(artists, callback) {
 	var result = {};
 	var totalPlays = 0;
 	
@@ -32,7 +32,7 @@ var getGenreData = function(artists) {
 		}
 	}
 
-	return result;
+	callback(result);
 }
 
 module.exports = getGenreData;
