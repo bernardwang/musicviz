@@ -32,16 +32,15 @@ var MusicApp = React.createClass({
 	 *	Saves data in state for D3 to use
 	 */
 	submitUserInfo: function(name, house) {
-		var that = this;		//fix later
 		getArtistData(name, function(artistData){
 			if(artistData) { // no errors, valid result
-				that.setState({ 
+				this.setState({ 
 					name: name,
 					house: house,
    			});
-				that.createUserData(artistData);
+				this.createUserData(artistData);
 			}
-		});
+		}.bind(this));
   },
 	
 	/**
@@ -49,34 +48,29 @@ var MusicApp = React.createClass({
 	 *	Saves data in state for D3 to use
 	 */
 	createUserData: function(artistData) {
-		var that = this;		//fix later
 		getGenreData(artistData, function(genreData) {
 			if(genreData) { // valid result
-				that.setState({ 
+				this.setState({ 
 					userGenres: genreData
    			});
-				that.submitGenres(genreData);		// update database 
+				this.submitGenres(genreData);		// update database 
 			}
-		});
+		}.bind(this));
 	},
 	
 	// temporary function to test api get
 	getGenres: function() {
-		// 3001 for browsersync
-		var that = this;		//fix later
-		var url = 'http://localhost:3001/api/music/genres';
-			ajaxWrapper(url, 'GET', null,'json', function(res) {
-				that.setState({ 
-					totalGenres: res
-   			});
-			});
+		var url = 'http://localhost:3001/api/music/genres';		// 3001 for browsersync
+		ajaxWrapper(url, 'GET', null,'json', function(res) {
+			this.setState({ 
+				totalGenres: res
+   		});
+		}.bind(this));
 	},
 	
 	// temporary function to test api post
 	submitGenres: function(genres) {
-		// 3001 for browsersync
-		var that = this;		//fix later
-		var url = 'http://localhost:3001/api/music/genres';
+		var url = 'http://localhost:3001/api/music/genres';		// 3001 for browsersync
 		for(var key in genres){
 			var data = { 
 				name: key,

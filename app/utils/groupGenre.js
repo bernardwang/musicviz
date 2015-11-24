@@ -45,7 +45,6 @@ var compareCall = function(artist, compare, callback) {
  */
 var selectGenres = function(genres, callback) {
 	result = {};
-	var that = this;
 	
 	async.each(genres,
 		function(genre, asyncCallback) {
