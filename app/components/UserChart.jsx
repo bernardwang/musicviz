@@ -13,31 +13,13 @@ var isObjectEmpty = require('../utils/isObjectEmpty');
 var UserChart = React.createClass({
 	
 	componentDidUpdate: function() {
-		if(!isObjectEmpty(this.props.data)) {
+		if(this.props.data.length > 0) {
 			var element = '.'+this.props.elementName;
-			var data = this.formatData();
+			var data = this.props.data;
 			var options = this.getChartOptions();
 			RadarChart(element, data, options);
 		}
   },
-	
-	formatData: function(genres) {
-		var genres = this.props.data;
-		var result = [];
-		var layer = [];
-		
-		for(var genre in genres) {
-			var percent = genres[genre];
-			layer.push({
-				'label': genre,
-				'value': percent
-			});
-		}
-	
-		// radar chart format: [[{},{}...{}]]
-		result.push(layer);
-		return result;
-	},
 	
 	getChartOptions: function() {
 		var margin = {top: 100, right: 100, bottom: 100, left: 100};

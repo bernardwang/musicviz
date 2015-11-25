@@ -17,7 +17,7 @@ module.exports = function(app) {
 		
 		Genre
 		.find({})
-		.sort({ count: -1 })
+		.sort({ value: -1 })
 		.limit(20)
 		.exec(function(err, genres) {
     	if(err){

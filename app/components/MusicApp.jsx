@@ -18,7 +18,7 @@ var MusicApp = React.createClass({
     return {
 			name: '',
 			house: '',
-			userData: {},
+			userData: [],
 			totalData: []
     };
   },
@@ -32,14 +32,14 @@ var MusicApp = React.createClass({
 	 *	Submits data to DB
 	 */
 	submitUserData: function(name, house) {
-		getUserData(name, function(userData) {
+		getUserData(name, function(userGenres, userData) {
 			if(userData){ // no errors, valid result
 				this.setState({
 					name: name,
 					house: house,
 					userData: userData
 				});
-				this.submitGenres(userData);	
+				this.submitGenres(userGenres);	
 			}
 		}.bind(this));
   },

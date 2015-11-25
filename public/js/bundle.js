@@ -156,7 +156,7 @@ var MusicApp = React.createClass({displayName: "MusicApp",
     return {
 			name: '',
 			house: '',
-			userData: {},
+			userData: [],
 			totalData: []
     };
   },
@@ -170,14 +170,14 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 	 *	Submits data to DB
 	 */
 	submitUserData: function(name, house) {
-		getUserData(name, function(userData) {
+		getUserData(name, function(userGenres, userData) {
 			if(userData){ // no errors, valid result
 				this.setState({
 					name: name,
 					house: house,
 					userData: userData
 				});
-				this.submitGenres(userData);	
+				this.submitGenres(userGenres);	
 			}
 		}.bind(this));
   },
@@ -299,31 +299,13 @@ var isObjectEmpty = require('../utils/isObjectEmpty');
 var UserChart = React.createClass({displayName: "UserChart",
 	
 	componentDidUpdate: function() {
-		if(!isObjectEmpty(this.props.data)) {
+		if(this.props.data.length > 0) {
 			var element = '.'+this.props.elementName;
-			var data = this.formatData();
+			var data = this.props.data;
 			var options = this.getChartOptions();
 			RadarChart(element, data, options);
 		}
   },
-	
-	formatData: function(genres) {
-		var genres = this.props.data;
-		var result = [];
-		var layer = [];
-		
-		for(var genre in genres) {
-			var percent = genres[genre];
-			layer.push({
-				'label': genre,
-				'value': percent
-			});
-		}
-	
-		// radar chart format: [[{},{}...{}]]
-		result.push(layer);
-		return result;
-	},
 	
 	getChartOptions: function() {
 		var margin = {top: 100, right: 100, bottom: 100, left: 100};
@@ -526,7 +508,9 @@ var getUserArtists = require('./getUserArtists.js');
 var getUserGenres = require('./getUserGenres.js');
 
 /**
- *	Returns list of user's top genres
+ *	Returns list of users top genres in two formats,
+ *	Map of genre to value for submitting to DB & 
+ *	List of label/value objects for D3 chart
  */
 var getUserData = function(name, callback) {
 	getUserArtists(name, function(userArtists) {
@@ -537,7 +521,21 @@ var getUserData = function(name, callback) {
 			if(!userGenres){
 				callback(null)
 			}
-			callback(userGenres);
+		
+			// Formats genres for D3 chart
+			// Single layer for user
+			var userData = [];
+			var layer = [];
+			for(var genre in userGenres) {
+				var percent = userGenres[genre];
+				layer.push({
+					'label': genre,
+					'value': percent
+				});
+			}
+			userData.push(layer);
+			
+			callback(userGenres, userData);
 		});
 	});
 };
