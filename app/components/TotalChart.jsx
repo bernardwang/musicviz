@@ -13,11 +13,12 @@ var isObjectEmpty = require('../utils/isObjectEmpty');
 var TotalChart = React.createClass({
 	
 	componentDidUpdate: function() {
+		//console.log(this.props.data);
 		if(!isObjectEmpty(this.props.data)) {
 			var element = '.'+this.props.elementName;
-			var data = this.formatData();
+			//var data = this.formatData();
 			var options = this.getChartOptions();
-			LineChart(element, data, options);
+			LineChart(element, this.props.data, options);
 		}
   },
 	

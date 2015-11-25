@@ -20,8 +20,10 @@ module.exports = function(app) {
 		.sort({ value: -1 })
 		.limit(20)
 		.exec(function(err, genres) {
-    	if(err)
-    	    res.send(err);
+    	if(err){
+				console.log(err);
+    	  res.send(null);
+			}
     	res.json(genres); 
     });
 	});
@@ -35,7 +37,8 @@ module.exports = function(app) {
 		
 		Genre.findOne({ 'name': req.body.name }, function(err, genre) {
 			if(err) {
-				res.send(err);
+				console.log(err);
+				res.send(null);
 			}
 			
 			if(!genre) {	// genre does not already exist in db, create new
@@ -44,20 +47,21 @@ module.exports = function(app) {
 			}
 
 			// Set total value and count
-			genre.value = 0;
-			genre.value += parseInt(req.body.value);
+			genre.value += parseFloat(req.body.value);
 			genre.count += 1;
 			
 			// Set specific personality value and count
 			var personalityIndex = Genre.PERSONALITY_CONST[req.body.personality];
-			genre.personality[personalityIndex].value += parseInt(req.body.value);
+			genre.personality[personalityIndex].value += parseFloat(req.body.value);
 			genre.personality[personalityIndex].count += 1;
 			
 			// Save result to database
 			genre.save(function(err) {
 				if(err) {
-					res.send(err);
+					console.log(err)
+					res.send(null);
 				}
+
 				res.json(genre);
 			});
 

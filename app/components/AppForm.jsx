@@ -21,6 +21,9 @@ var Form = React.createClass({
 		if(name && house){
 			this.props.submitForm(name, house); // hardcoded in for now
 		}
+		else{
+			alert('Incomplete form, please try again.');	
+		}
 	},
 
 	selectButton: function(event) {

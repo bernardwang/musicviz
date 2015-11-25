@@ -1,5 +1,5 @@
 //
-//	getArtistData.js
+//	getUserArtists.js
 //	
 //	Gets a list of top artists from a Last.fm user
 //
@@ -38,7 +38,7 @@ var artistCall = function(artist, callback) {
  *	Returns user's list of top artists
  *  Each artist has genre list
  */
-var getArtistData = function(username, callback) {
+var getUserArtists = function(username, callback) {
 	var result = [];
 	var limit = 20;
 	
@@ -74,4 +74,4 @@ var getArtistData = function(username, callback) {
 	});
 };
 
-module.exports = getArtistData;
+module.exports = getUserArtists;

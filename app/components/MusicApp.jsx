@@ -8,9 +8,10 @@ var React = require('react');
 var AppHeader = require('./AppHeader');
 var AppMain = require('./AppMain');
 
-var ajaxWrapper = require('../utils/ajaxWrapper.js');
-var getArtistData = require('../utils/getArtistData.js');
-var getGenreData = require('../utils/getGenreData.js');
+var getUserArtists = require('../utils/getUserArtists.js');
+var getUserGenres = require('../utils/getUserGenres.js');
+var getGenres = require('../utils/getGenres.js');
+var submitGenres = require('../utils/submitGenres.js');
 
 var MusicApp = React.createClass({
 	
@@ -32,13 +33,13 @@ var MusicApp = React.createClass({
 	 *	Saves data in state for D3 to use
 	 */
 	submitUserInfo: function(name, house) {
-		getArtistData(name, function(artistData){
-			if(artistData) { // no errors, valid result
+		getUserArtists(name, function(userArtists) {
+			if(userArtists) { // no errors, valid result
 				this.setState({ 
 					name: name,
 					house: house,
    			});
-				this.createUserData(artistData);
+				this.createUserData(userArtists);
 			}
 		}.bind(this));
   },
@@ -47,40 +48,34 @@ var MusicApp = React.createClass({
 	 *	Creates map of top genres
 	 *	Saves data in state for D3 to use
 	 */
-	createUserData: function(artistData) {
-		getGenreData(artistData, function(genreData) {
-			if(genreData) { // valid result
+	createUserData: function(userArtists) {
+		getUserGenres(userArtists, function(userGenres) {
+			if(userGenres) { // valid result
 				this.setState({ 
-					userGenres: genreData
+					userGenres: userGenres
    			});
-				this.submitGenres(genreData);		// update database 
+				this.submitGenres(userGenres);		// update database 
 			}
 		}.bind(this));
 	},
 	
-	// temporary function to test api get
 	getGenres: function() {
-		var url = 'http://localhost:3001/api/music/genres';		// 3001 for browsersync
-		ajaxWrapper(url, 'GET', null,'json', function(res) {
-			this.setState({ 
-				totalGenres: res
-   		});
+		getGenres(function(genres) {
+			if(genres) {
+				this.setState({
+					totalGenres: genres
+				});
+			}
 		}.bind(this));
 	},
 	
-	// temporary function to test api post
 	submitGenres: function(genres) {
-		var url = 'http://localhost:3001/api/music/genres';		// 3001 for browsersync
-		for(var key in genres){
-			var data = { 
-				name: key,
-				value: genres[key],
-				personality: this.state.house
-			};
-			ajaxWrapper(url, 'POST', data,'json', function(res) {
-				//console.log(res);
-			});
-		}
+		var house = this.state.house;
+		submitGenres(genres, house, function(result) {
+			if(!result) {
+				alert('Submission error');
+			}
+		});
 	},
 	
   render: function() {	

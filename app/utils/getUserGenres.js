@@ -1,5 +1,5 @@
 //
-//	getGenreData.js
+//	getUserGenres.js
 //	
 //	Combines list of artists into list of genres
 //
@@ -7,10 +7,11 @@
 /**
  *	Creates map of top genres from list of top artists
  */
-var getGenreData = function(artists, callback) {
+var getUserGenres = function(artists, callback) {
 	var result = {};
 	var totalPlays = 0;
 	
+	// aggregates by genre
 	for(var i = 0; i < artists.length; i++) {
 		var artist = artists[i];
 		var genre = artist.genre[0].name;		// only first genre tag
@@ -35,4 +36,4 @@ var getGenreData = function(artists, callback) {
 	callback(result);
 }
 
-module.exports = getGenreData;
+module.exports = getUserGenres;
