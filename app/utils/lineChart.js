@@ -131,14 +131,18 @@ var lineChart = function(id, data, options) {
 	///////////// Draw the radar chart blobs ////////////////
 	/////////////////////////////////////////////////////////
 	
+	//
+	// TODO: find way to use cardinal interpolation 
+	//
+	
 	// data line
 	var line = d3.svg.line()
-		.interpolate("linear-closed")
+		.interpolate("cardinal")	// not as good as cardinal but does not go below x axis
 		.x(function(d,i) { return i*widthLabel; })
     .y(function(d,i) { return scale(d.value); });	
 	
 	if(cfg.roundStrokes) {
-		line.interpolate("cardinal");
+		line.interpolate("monotone");
 	}
 				
 	// Create a wrapper for the blobs	
@@ -153,7 +157,7 @@ var lineChart = function(id, data, options) {
 	
 	// area under line
 	var area = d3.svg.area()
-		.interpolate("cardinal")
+		.interpolate("monotone")	// not as good as cardinal but does not go below x axis
 		.x(function(d,i) { return i*widthLabel; })
 		.y0(cfg.h)
 		.y1(function(d) { return scale(d.value); });
@@ -190,13 +194,28 @@ var lineChart = function(id, data, options) {
 		.style("fill", "none")
 		.style("filter" , "url(#glow)");		
 	
+	// removes tooltips for zero data point
+	var trimDataPoints = function(d) {
+		var data = [];
+			d.map(function(obj, i) {
+				if(obj.value != 0) {
+					obj.index = i;
+					console.log(i);
+					data.push(obj);	
+				}
+			});
+		return data;
+	};
+	
 	// Append the data point circles and tooltip
 	blobWrapper.selectAll(".lineCircle")
-		.data(function(d,i) { return d; })
+		.data(function(d,i) {
+			return trimDataPoints(d)
+		})
 		.enter().append("circle")
 		.attr("class", "lineCircle")
 		.attr("r", cfg.dotRadius)
-		.attr("cx", function(d,i){ return widthLabel*i })
+		.attr("cx", function(d,i){ return widthLabel*d.index })
 		.attr("cy", function(d,i){ return scale(d.value) })
 		.style("fill", function(d,i,j) { return cfg.color(j); })
 		.style("fill-opacity", 0.8)
