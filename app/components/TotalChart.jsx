@@ -13,32 +13,13 @@ var isObjectEmpty = require('../utils/isObjectEmpty');
 var TotalChart = React.createClass({
 	
 	componentDidUpdate: function() {
-		//console.log(this.props.data);
-		if(!isObjectEmpty(this.props.data)) {
+		if(this.props.data.length > 0) {
 			var element = '.'+this.props.elementName;
-			//var data = this.formatData();
+			var data = this.props.data;
 			var options = this.getChartOptions();
-			LineChart(element, this.props.data, options);
+			LineChart(element, data, options);
 		}
   },
-	
-	formatData: function(genres) {
-		var genres = this.props.data;
-		var result = [];
-		var layer = [];
-		
-		for(var genre in genres) {
-			var percent = genres[genre];
-			layer.push({
-				'label': genre,
-				'value': percent
-			});
-		}
-	
-		// radar chart format: [[{},{}...{}]]
-		result.push(layer);
-		return result;
-	},
 	
 	getChartOptions: function() {
 		var margin = {top: 50, right: 50, bottom: 50, left: 80}; // to account for y axis labels

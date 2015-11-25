@@ -8,8 +8,7 @@ var React = require('react');
 var AppHeader = require('./AppHeader');
 var AppMain = require('./AppMain');
 
-var getUserArtists = require('../utils/getUserArtists.js');
-var getUserGenres = require('../utils/getUserGenres.js');
+var getUserData = require('../utils/getUserData.js');
 var getGenres = require('../utils/getGenres.js');
 var submitGenres = require('../utils/submitGenres.js');
 
@@ -19,61 +18,56 @@ var MusicApp = React.createClass({
     return {
 			name: '',
 			house: '',
-			userGenres: {},
-			totalGenres: {}
+			userData: {},
+			totalData: []
     };
   },
 	
 	componentDidMount: function() {
 		this.getGenres();	
 	},
-	
+
 	/**
-	 *	Gets array of top artists from Lastfm user profile
-	 *	Saves data in state for D3 to use
+	 *	Gets list of user's top genres
+	 *	Submits data to DB
 	 */
-	submitUserInfo: function(name, house) {
-		getUserArtists(name, function(userArtists) {
-			if(userArtists) { // no errors, valid result
-				this.setState({ 
+	submitUserData: function(name, house) {
+		getUserData(name, function(userData) {
+			if(userData){ // no errors, valid result
+				this.setState({
 					name: name,
 					house: house,
-   			});
-				this.createUserData(userArtists);
+					userData: userData
+				});
+				this.submitGenres(userData);	
 			}
 		}.bind(this));
   },
 	
 	/**
-	 *	Creates map of top genres
-	 *	Saves data in state for D3 to use
+	 *	Gets total genres from DB
 	 */
-	createUserData: function(userArtists) {
-		getUserGenres(userArtists, function(userGenres) {
-			if(userGenres) { // valid result
-				this.setState({ 
-					userGenres: userGenres
-   			});
-				this.submitGenres(userGenres);		// update database 
-			}
-		}.bind(this));
-	},
-	
 	getGenres: function() {
 		getGenres(function(genres) {
 			if(genres) {
 				this.setState({
-					totalGenres: genres
+					totalData: genres
 				});
 			}
 		}.bind(this));
 	},
 	
+	/**
+	 *	Posts user genrs to DB
+	 */
 	submitGenres: function(genres) {
 		var house = this.state.house;
 		submitGenres(genres, house, function(result) {
-			if(!result) {
-				alert('Submission error');
+			if(result){
+				
+			}
+			else {
+				alert('Unable to submit user data, please try again');
 			}
 		});
 	},
@@ -81,8 +75,8 @@ var MusicApp = React.createClass({
   render: function() {	
 		return (
 			<div>
-				<AppHeader submitForm={this.submitUserInfo}/>
-				<AppMain name={this.state.name} house={this.state.house} userGenres={this.state.userGenres} totalGenres={this.state.totalGenres}/>
+				<AppHeader submitForm={this.submitUserData}/>
+				<AppMain name={this.state.name} house={this.state.house} userData={this.state.userData} totalData={this.state.totalData}/>
 			</div>
 		)
 	}

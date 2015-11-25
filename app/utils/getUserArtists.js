@@ -42,23 +42,23 @@ var getUserArtists = function(username, callback) {
 	var result = [];
 	var limit = 20;
 	
-	userCall(username, limit, function(data) {
-		if(data.error) {
+	userCall(username, limit, function(res) {
+		if(res.error) {
 			alert('Invalid username, please try again.');
 			callback(null);
 		}
 		
 		// array of artist objects
-		var artists = data.topartists.artist;
+		var artists = res.topartists.artist;
 		
 		// async loop, get artist info
 		async.each(artists, 
 			function(artist, asyncCallback) {
-				artistCall(artist.name, function(data) {
+				artistCall(artist.name, function(res) {
 					result.push({
 						"name": artist.name,
-						"genre": data.artist.tags.tag.slice(0,3),
-						"plays": data.artist.stats.playcount,
+						"genre": res.artist.tags.tag.slice(0,3),
+						"plays": res.artist.stats.playcount,
 						"count": artist.playcount
 					});
 					asyncCallback();

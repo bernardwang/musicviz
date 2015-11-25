@@ -21,18 +21,18 @@ var getCall =  function(callback) {
  */
 var getGenres = function(callback) {
 	var result = [[],[],[],[]]; 	// hardcoded for now, d3 input: 4 arrays of label/value objects
-	var limit = 5;
+	var limit = 7;
 	
 	// AJAX call
-	getCall(function(data) {
-		if(!data) {
+	getCall(function(res) {
+		if(!res) {
 			console.log('DB get request error');
 			callback(null);
 		}
 		
-		// format data
-		for(var i = 0; i < Math.min(limit,data.length); i++) {
-			var genre = data[i];
+		// format res
+		for(var i = 0; i < Math.min(limit, res.length); i++) {
+			var genre = res[i];
 			for(var j = 0; j < genre.personality.length; j++) {
 				var category = genre.personality[j];
 				var percent = 0;

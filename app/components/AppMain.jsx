@@ -18,8 +18,8 @@ var Main = React.createClass({
 		
 		return (
 			<main>
-				<UserChart title={UserTitle} data={this.props.userGenres} elementName={'userChart'}/>
-				<TotalChart title={TotalTitle} data={this.props.totalGenres} elementName={'totalChart'}/>
+				<UserChart title={UserTitle} data={this.props.userData} elementName={'userChart'}/>
+				<TotalChart title={TotalTitle} data={this.props.totalData} elementName={'totalChart'}/>
 			</main>
 		)
 		

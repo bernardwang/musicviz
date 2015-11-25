@@ -18,6 +18,7 @@ var submitGenres = function(genres, house, callback) {
 			value: genres[key],
 			personality: house
 		};
+		
 		ajaxWrapper(url, 'POST', data, 'json', function(res) {
 			if(!res) {
 				console.log('DB post request error');

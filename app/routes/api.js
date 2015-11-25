@@ -17,7 +17,7 @@ module.exports = function(app) {
 		
 		Genre
 		.find({})
-		.sort({ value: -1 })
+		.sort({ count: -1 })
 		.limit(20)
 		.exec(function(err, genres) {
     	if(err){
@@ -41,7 +41,7 @@ module.exports = function(app) {
 				res.send(null);
 			}
 			
-			if(!genre) {	// genre does not already exist in db, create new
+			if(!genre) {	// Genre does not already exist in db, create new
 				genre = Genre.initGenre();
 				genre.name = req.body.name;
 			}
