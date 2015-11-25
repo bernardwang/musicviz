@@ -33,15 +33,11 @@ var getGenres = function(callback) {
 		// format res
 		for(var i = 0; i < Math.min(limit, res.length); i++) {
 			var genre = res[i];
-			for(var j = 0; j < genre.personality.length; j++) {
-				var category = genre.personality[j];
-				var percent = 0;
-				if(category.count > 0) {
-					percent = category.value/category.count;
-				}
-				result[j].push({
+			for(var n = 0; n < genre.personality.length; n++) {
+				var house = genre.personality[n];
+				result[n].push({
 					'label': genre.name,
-					'value': percent
+					'value': house.percent
 				});
 			}
 		}

@@ -13,6 +13,7 @@ var GenreSchema = new Schema({
 	name				: String,														// genre name
 	value				: { type: Number, default: 0 },			// total combined percentages
 	count				: { type: Number, default: 0 },			// total entries
+	percent			: { type: Number, default: 0 },			// average percentage
 	personality	: [Personality],										// corresponding categories
 	category		: Number 														// number representing generalized genre category, not yet used
 });
@@ -36,6 +37,7 @@ GenreSchema.statics.initGenre = function(callback) {
 		name				: '',													
 		value				: 0,		
 		count				: 0,		
+		percent			: 0,
 		personality	: [],									
 		category		: 0 	// currently unused												
 	});
@@ -43,7 +45,8 @@ GenreSchema.statics.initGenre = function(callback) {
 	for(var i = 0; i < 4; i++) {
 		result.personality.push(result.personality.create({
 			value: 0,
-			count: 0
+			count: 0,
+			personality: 0
 		}));
 	}
 	

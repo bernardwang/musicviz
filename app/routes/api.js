@@ -17,7 +17,7 @@ module.exports = function(app) {
 		
 		Genre
 		.find({})
-		.sort({ value: -1 })
+		.sort({ percent: -1 })
 		.limit(20)
 		.exec(function(err, genres) {
     	if(err){
@@ -49,11 +49,14 @@ module.exports = function(app) {
 			// Set total value and count
 			genre.value += parseFloat(req.body.value);
 			genre.count += 1;
+			genre.percent = genre.value/genre.count;
 			
 			// Set specific personality value and count
 			var personalityIndex = Genre.PERSONALITY_CONST[req.body.personality];
-			genre.personality[personalityIndex].value += parseFloat(req.body.value);
-			genre.personality[personalityIndex].count += 1;
+			var personality = genre.personality[personalityIndex];
+			personality.value += parseFloat(req.body.value);
+			personality.count += 1;
+			personality.percent = personality.value/personality.count;
 			
 			// Save result to database
 			genre.save(function(err) {

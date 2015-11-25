@@ -16,10 +16,10 @@ var MusicApp = React.createClass({
 	
 	getInitialState: function() {
     return {
-			name: '',
-			house: '',
-			userData: [],
-			totalData: []
+			name: '',				// user's lastfm username
+			house: '',			// user's harry potter house 
+			userData: [],		// D3 data for userChart
+			totalData: []		// D3 data for totalChart
     };
   },
 	
@@ -30,10 +30,12 @@ var MusicApp = React.createClass({
 	/**
 	 *	Gets list of user's top genres
 	 *	Submits data to DB
+	 *
+	 * 	TODO: Cleanup getUserData
 	 */
 	submitUserData: function(name, house) {
-		getUserData(name, function(userGenres, userData) {
-			if(userData){ // no errors, valid result
+		getUserData(name, function(userGenres, userData) { 	// returns data in two different formats, kind of messy
+			if(userData){ // no errors, valid result					
 				this.setState({
 					name: name,
 					house: house,
@@ -58,7 +60,7 @@ var MusicApp = React.createClass({
 	},
 	
 	/**
-	 *	Posts user genrs to DB
+	 *	Posts user genres to DB
 	 */
 	submitGenres: function(genres) {
 		var house = this.state.house;
