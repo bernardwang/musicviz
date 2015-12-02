@@ -55,6 +55,10 @@ var getUserArtists = function(username, callback) {
 		async.each(artists, 
 			function(artist, asyncCallback) {
 				artistCall(artist.name, function(res) {
+					if(res.error) {
+						asyncCallback();
+					}
+
 					result.push({
 						"name": artist.name,
 						"genre": res.artist.tags.tag.slice(0,3),

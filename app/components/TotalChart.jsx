@@ -8,7 +8,6 @@ var React = require('react');
 var LineChart = require('../utils/lineChart.js');
 
 var ajaxWrapper = require('../utils/ajaxWrapper');
-var isObjectEmpty = require('../utils/isObjectEmpty');
 
 var TotalChart = React.createClass({
 	
@@ -28,7 +27,7 @@ var TotalChart = React.createClass({
 		
 		// draws chart
 		var color = d3.scale.ordinal()
-			.range(["#EDC951","#CC333F","#00A0B0"]);
+			.range(["#CC333F","#EDC951","#217BB7","#0B683E"]);
 		
 		var radarChartOptions = {
 			w: width,

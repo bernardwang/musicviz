@@ -21,18 +21,25 @@ var lineChart = function(id, data, options) {
 	 wrapWidth: 60, 							// The number of pixels after which a label needs to be given a new line
 	 opacityArea: 0.35, 					// The opacity of the area of the blob
 	 dotRadius: 4, 								// The size of the colored circles of each blog
-	 opacityCircles: 0.1, 				// The opacity of the circles of each blob
+	 opacityGrid: 0.1, 						// The opacity of the circles of each blob
 	 strokeWidth: 2, 							// The width of the stroke around each blob
 	 roundStrokes: false,					// If true the area and stroke will follow a round path (cardinal)
-	 color: d3.scale.category10()	//Color function
+	 color: d3.scale.category10(),//Color function
+
+	 legendW: 120,
+	 legendH: 30,
+	 legendSquare: 18,
+	 legendOpacity: 0.4,
+	 legendSelectOpacity: 0.9,
+	 legendLabels: ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
 	};
 	
 	//Put all of the options into a variable called cfg
 	if('undefined' !== typeof options){
 	  for(var i in options){
 		if('undefined' !== typeof options[i]){ cfg[i] = options[i]; }
-	  }//for i
-	}//if
+	  }
+	}
 	
 	//If the supplied maxValue is smaller than the actual one, replace by the max in the data
 	var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
@@ -93,7 +100,7 @@ var lineChart = function(id, data, options) {
 		.attr("height", cfg.h/cfg.levels)
 		.style("fill", "#CDCDCD")
 		.style("stroke", "#CDCDCD")
-		.style("fill-opacity", cfg.opacityCircles)
+		.style("fill-opacity", cfg.opacityGrid)
 		.style("filter" , "url(#glow)");
 
 	// Text indicating at what % each level is
@@ -128,6 +135,45 @@ var lineChart = function(id, data, options) {
 		.call(wrap, cfg.wrapWidth);
 
 	/////////////////////////////////////////////////////////
+	///////////////////////// Legend ////////////////////////
+	/////////////////////////////////////////////////////////
+
+	// Wrapper for the grid
+	var legendWrapper = g.append("g").attr("class", "legendWrapper");
+
+	var chartLegend = legendWrapper.selectAll("chartLegend")
+		.data(d3.range(0,4))
+		.enter().append("g")
+		.attr("class", "chartLegend")
+		.attr("x", cfg.w-cfg.legendW)
+		.attr("y", function(d, i){return i*cfg.legendH;})
+		.attr("width", cfg.legendW)
+		.attr("height", cfg.legendH);
+
+	chartLegend.append("rect")
+		.attr("class", "legendSelect")
+		.attr("x", cfg.w-cfg.legendW)
+		.attr("y", function(d, i){return (i*cfg.legendH)+(cfg.legendH-cfg.legendSquare)/2;})
+		.attr("width", cfg.legendSquare)
+		.attr("height", cfg.legendSquare)
+		.style("fill", function(d, i){return cfg.color(i);})
+		.style("stroke", "#CDCDCD")
+		.style("fill-opacity", cfg.legendOpacity)
+		.on('mouseover', function(d,i){
+			hoverOn(i);
+		})
+		.on('mouseout', function(d,i){
+			hoverOff(i);
+		});
+
+	chartLegend.append("text")
+		.attr("class", "legendLabel")
+		.attr("x", cfg.w-cfg.legendW+cfg.legendH)
+		.attr("y", function(d, i){return i*cfg.legendH + 20;}) // HARDCODED FIX LATER
+		.attr("fill", "#737373")
+		.text(function(d,i){ return cfg.legendLabels[i];} );
+
+	/////////////////////////////////////////////////////////
 	///////////// Draw the radar chart blobs ////////////////
 	/////////////////////////////////////////////////////////
 	
@@ -145,11 +191,14 @@ var lineChart = function(id, data, options) {
 		line.interpolate("monotone");
 	}
 				
-	// Create a wrapper for the blobs	
-	var blobWrapper = g.selectAll(".blobWrapper")
+	// Wrapper for the blobs
+	var blobWrapper = g.append("g").attr("class", "blobWrapper");
+
+	// Rectangles for each grid level
+	var blobs = blobWrapper.selectAll(".blob")
 		.data(data)
 		.enter().append("g")
-		.attr("class", ".blobWrapper")
+		.attr("class", "blob")
 		.attr("x",0)
 		.attr("y",0)
 		.attr("width",cfg.w)
@@ -163,30 +212,20 @@ var lineChart = function(id, data, options) {
 		.y1(function(d) { return scale(d.value); });
 	
 	// Append area blobs
-	blobWrapper.append("path")
+	blobs.append("path")
 		.attr("d", function(d,i) { return area(d,i); })
-		.attr("class", "lineBlob")
+		.attr("class", "blobPath")
 		.style("fill", function(d,i) { return cfg.color(i); })
 		.style("fill-opacity", cfg.opacityArea)
-		.on('mouseover', function (d,i){
-			//Dim all blobs
-			d3.selectAll(".lineBlob")
-				.transition().duration(200)
-				.style("fill-opacity", 0.1); 
-			//Bring back the hovered over blob
-			d3.select(this)
-				.transition().duration(200)
-				.style("fill-opacity", 0.7);	
+		.on('mouseover', function(d,i){
+			hoverOn(i);
 		})
-		.on('mouseout', function(){
-			//Bring back all blobs
-			d3.selectAll(".lineBlob")
-				.transition().duration(200)
-				.style("fill-opacity", cfg.opacityArea);
+		.on('mouseout', function(d,i){
+			hoverOff(i)
 		});
 		
 	// Create line paths
-	blobWrapper.append("path")
+	blobs.append("path")
 		.attr("class", "lineStroke")
 		.attr("d", function(d,i) { return line(d,i); })
 		.style("stroke-width", cfg.strokeWidth + "px")
@@ -194,13 +233,12 @@ var lineChart = function(id, data, options) {
 		.style("fill", "none")
 		.style("filter" , "url(#glow)");		
 	
-	// removes tooltips for zero data point
+	// Removes tooltips for zero data point
 	var trimDataPoints = function(d) {
 		var data = [];
 			d.map(function(obj, i) {
 				if(obj.value != 0) {
 					obj.index = i;
-					console.log(i);
 					data.push(obj);	
 				}
 			});
@@ -208,7 +246,7 @@ var lineChart = function(id, data, options) {
 	};
 	
 	// Append the data point circles and tooltip
-	blobWrapper.selectAll(".lineCircle")
+	blobs.selectAll(".lineCircle")
 		.data(function(d,i) {
 			return trimDataPoints(d)
 		})
@@ -223,7 +261,6 @@ var lineChart = function(id, data, options) {
 			.on("mouseover", function(d,i) {
 				newX =  parseFloat(d3.select(this).attr('cx')) - 10;
 				newY =  parseFloat(d3.select(this).attr('cy')) - 10;
-						
 				tooltip
 					.attr('x', newX)
 					.attr('y', newY)
@@ -237,7 +274,7 @@ var lineChart = function(id, data, options) {
 			});
 	
 	//Set up the small tooltip for when you hover over a circle
-	var tooltip = g.append("text")
+	var tooltip = blobWrapper.append("text")
 		.attr("class", "lineToolTip")
 		.style("opacity", 0);
 	
@@ -271,7 +308,48 @@ var lineChart = function(id, data, options) {
 		  }
 		}
 	  });
-	}//wrap	*/
+	}
+
+	function hoverOn(index){
+		d3.selectAll(".blobPath")
+		.transition().duration(200)
+		.style("fill-opacity", function(d,i){
+			return (index === i) ? 0.7 : 0.1;
+		});
+
+		d3.selectAll(".chartLegend")
+			.each(function (d, i) {
+				if(index === i){
+					d3.select(this).select(".legendSelect")
+						.transition().duration(200)
+						.style("fill-opacity", 0.7);
+
+					d3.select(this).select(".legendLabel")
+						.transition().duration(200)
+						.style("fill", "#444");
+				}
+			});
+	}
+
+	function hoverOff(index){
+		d3.selectAll(".blobPath")
+		.transition().duration(200)
+		.style("fill-opacity", cfg.opacityArea);
+
+		d3.selectAll(".chartLegend")
+			.each(function (d, i) {
+				if(index === i){
+					d3.select(this).select(".legendSelect")
+						.transition().duration(200)
+						.style("fill-opacity", cfg.legendOpacity);
+
+					d3.select(this).select(".legendLabel")
+						.transition().duration(200)
+						.style("fill", "#737373");
+				}
+			});
+	}
+
 	
 }//RadarChart
 
