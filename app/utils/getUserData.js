@@ -6,21 +6,21 @@ var getUserGenres = require('./getUserGenres.js');
  *	Map of genre to value for submitting to DB & 
  *	List of label/value objects for D3 chart
  */
-var getUserData = function(name, callback) {
-	getUserArtists(name, function(userArtists) {
-		if(!userArtists) {
-			callback(null);	
+var getUserData = function (name, callback) {
+	getUserArtists(name, function (userArtists) {
+		if (!userArtists) {
+			callback(null);
 		}
-		getUserGenres(userArtists, function(userGenres) {
-			if(!userGenres){
-				callback(null)
+		getUserGenres(userArtists, function (userGenres) {
+			if (!userGenres) {
+				callback(null);
 			}
-		
+
 			// Formats genres for D3 chart
 			// Single layer for user
 			var userData = [];
 			var layer = [];
-			for(var genre in userGenres) {
+			for (var genre in userGenres) {
 				var percent = userGenres[genre];
 				layer.push({
 					'label': genre,
@@ -28,7 +28,7 @@ var getUserData = function(name, callback) {
 				});
 			}
 			userData.push(layer);
-			
+
 			callback(userGenres, userData);
 		});
 	});

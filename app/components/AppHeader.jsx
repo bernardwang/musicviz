@@ -9,7 +9,7 @@ var AppForm = require('./AppForm');
 
 var AppHeader = React.createClass({
 
-  render: function() {
+  render: function () {
 
 		return (
 			<header>

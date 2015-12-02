@@ -8,28 +8,27 @@ var React = require('react');
 
 var Form = React.createClass({
 	
-	getInitialState: function() {
+	getInitialState: function () {
     return {
       userhouse: ''
     };
   },
 	
-	onSubmit: function(event) {
+	onSubmit: function (event) {
 		event.preventDefault();
 	  var name = this.refs.username.value.trim();
 		var house = this.state.userhouse;
-		if(name && house){
+		if (name && house) {
 			this.props.submitForm(name, house); // hardcoded in for now
-		}
-		else{
+		} else {
 			alert('Incomplete form, please try again.');	
 		}
 	},
 
-	selectButton: function(event) {
+	selectButton: function (event) {
 		var buttons = document.getElementById('input-house').children;
-		for(var i = 0; i < buttons.length; i++) {
-			var classname = (buttons[i]==event.target) ? 'selected' : '';
+		for (var i = 0; i < buttons.length; i++) {
+			var classname = (buttons[i] == event.target) ? 'selected' : '';
 			buttons[i].className = classname;
 		}
 		this.setState({

@@ -10,53 +10,53 @@ var Personality = require('./Personality');
 var Schema = mongoose.Schema;
 
 var GenreSchema = new Schema({
-	name				: String,														// genre name
-	value				: { type: Number, default: 0 },			// total combined percentages
-	count				: { type: Number, default: 0 },			// total entries
-	percent			: { type: Number, default: 0 },			// average percentage
-	personality	: [Personality],										// corresponding categories
-	category		: Number 														// number representing generalized genre category, not yet used
+	name				: String, // genre name
+	value				: { type: Number, default: 0 },	// total combined percentages
+	count				: { type: Number, default: 0 },	// total entries
+	percent			: { type: Number, default: 0 },	// average percentage
+	personality	: [Personality], // corresponding categories
+	category		: Number // number representing generalized genre category, not yet used
 });
 
 /**
  *	Map to get corresponding personality index
  */
 GenreSchema.statics.PERSONALITY_CONST = {
-	'Gryffindor' : 0,
-	'Hufflepuff' : 1,
-	'Ravenclaw' : 2,
-	'Slytherin' : 3
+	'Gryffindor'	: 0,
+	'Hufflepuff'	: 1,
+	'Ravenclaw'		: 2,
+	'Slytherin'		: 3
 };
 
 /**
  *	Stores and updates a genre to database
  */
-GenreSchema.statics.initGenre = function(callback) {
-	
+GenreSchema.statics.initGenre = function (callback) {
+
 	var result = new Genre({
-		name				: '',													
-		value				: 0,		
-		count				: 0,		
+		name				: '',
+		value				: 0,
+		count				: 0,
 		percent			: 0,
-		personality	: [],									
-		category		: 0 	// currently unused												
+		personality	: [],
+		category		: 0 // currently unused
 	});
-	
-	for(var i = 0; i < 4; i++) {
+
+	for (var i = 0; i < 4; i++) {
 		result.personality.push(result.personality.create({
-			value: 0,
-			count: 0,
-			personality: 0
+			value				: 0,
+			count				: 0,
+			personality	: 0
 		}));
 	}
-	
+
 	return result;
 };
 
 /**
  *	Deletes entire database contents
  */
-GenreSchema.statics.deleteCommits = function(err, callback) {
+GenreSchema.statics.deleteCommits = function (err, callback) {
 	console.log('DELETE ALL');
 	Genre.find().remove().exec(); // nukes db, pretty lazy
 	callback(null);

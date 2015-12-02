@@ -14,7 +14,7 @@ var submitGenres = require('../utils/submitGenres.js');
 
 var MusicApp = React.createClass({
 	
-	getInitialState: function() {
+	getInitialState: function () {
     return {
 			name: '',				// user's lastfm username
 			house: '',			// user's harry potter house 
@@ -23,7 +23,7 @@ var MusicApp = React.createClass({
     };
   },
 	
-	componentDidMount: function() {
+	componentDidMount: function () {
 		this.getGenres();	
 	},
 
@@ -33,9 +33,9 @@ var MusicApp = React.createClass({
 	 *
 	 * 	TODO: Cleanup getUserData
 	 */
-	submitUserData: function(name, house) {
-		getUserData(name, function(userGenres, userData) { 	// returns data in two different formats, kind of messy
-			if(userData){ // no errors, valid result					
+	submitUserData: function (name, house) {
+		getUserData(name, function (userGenres, userData) { 	// returns data in two different formats, kind of messy
+			if (userData) { // no errors, valid result
 				this.setState({
 					name: name,
 					house: house,
@@ -49,9 +49,9 @@ var MusicApp = React.createClass({
 	/**
 	 *	Gets total genres from DB
 	 */
-	getGenres: function() {
-		getGenres(function(genres) {
-			if(genres) {
+	getGenres: function () {
+		getGenres(function (genres) {
+			if (genres) {
 				this.setState({
 					totalData: genres
 				});
@@ -62,19 +62,18 @@ var MusicApp = React.createClass({
 	/**
 	 *	Posts user genres to DB
 	 */
-	submitGenres: function(genres) {
+	submitGenres: function (genres) {
 		var house = this.state.house;
-		submitGenres(genres, house, function(result) {
-			if(result){
+		submitGenres(genres, house, function (result) {
+			if (result) {
 				
-			}
-			else {
+			} else {
 				alert('Unable to submit user data, please try again');
 			}
 		});
 	},
 	
-  render: function() {	
+  render: function () {
 		return (
 			<div>
 				<AppHeader submitForm={this.submitUserData}/>

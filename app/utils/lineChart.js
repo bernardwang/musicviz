@@ -10,9 +10,9 @@ var lineChart = function(id, data, options) {
 	 w: 800,											// Width of the chart
 	 h: 600,											// Height of the chart
 	 margin: {										//The margins of the SVG
-		 top: 20, 
-		 right: 20, 
-		 bottom: 20, 
+		 top: 20,
+		 right: 20,
+		 bottom: 20,
 		 left: 20
 	 },
 	 levels: 4,										// How many levels should there be drawn
@@ -35,7 +35,7 @@ var lineChart = function(id, data, options) {
 	};
 	
 	//Put all of the options into a variable called cfg
-	if('undefined' !== typeof options){
+	if ('undefined' !== typeof options) {
 	  for(var i in options){
 		if('undefined' !== typeof options[i]){ cfg[i] = options[i]; }
 	  }

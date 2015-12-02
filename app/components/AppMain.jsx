@@ -10,10 +10,10 @@ var TotalChart = require('./TotalChart');
 
 var Main = React.createClass({
 	
-  render: function() {
+  render: function () {
 			
 		// Will not display title until data is submitted
-		var UserTitle = (this.props.name) ? this.props.name+"'s Top Genres" : '';
+		var UserTitle = (this.props.name) ? this.props.name + "'s Top Genres" : '';
 		var TotalTitle = (this.props.name) ? "Current Top Genres" : '';
 		
 		return (

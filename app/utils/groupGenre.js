@@ -11,12 +11,12 @@ var CONST = require('./selectConstants');
 /**
  *	AJAX call to get a tag's top artist
  */
-var tagCall = function(tag, callback) {
+var tagCall = function (tag, callback) {
 	var url = 'http://ws.audioscrobbler.com/2.0/';
 	var type = 'POST';
 	var data = 'method=tag.getTopArtists' + '&tag=' + tag + '&api_key=57ee3318536b23ee81d6b27e36997cde' + '&format=json';
 	var dataType = 'jsonp';
-	ajaxWrapper(url, type, data, dataType, function(res) {
+	ajaxWrapper(url, type, data, dataType, function (res) {
 		callback(res);
 	});
 };
@@ -24,16 +24,16 @@ var tagCall = function(tag, callback) {
 /**
  *	AJAX call to compare two artists
  */
-var compareCall = function(artist, compare, callback) {
+var compareCall = function (artist, compare, callback) {
 	var url = 'http://ws.audioscrobbler.com/2.0/';
 	var type = 'POST';
-	var data = 'method=tasteometer.compare' + '&type=artist|artist' + '&value='+ artist + '|' + compare + '&api_key=57ee3318536b23ee81d6b27e36997cde' + '&format=json';
+	var data = 'method=tasteometer.compare' + '&type=artist|artist' + '&value=' + artist + '|' + compare + '&api_key=57ee3318536b23ee81d6b27e36997cde' + '&format=json';
 	var dataType = 'jsonp';
-	ajaxWrapper(url, type, data, dataType, function(res) {
+	ajaxWrapper(url, type, data, dataType, function (res) {
 		callback(res);
 	});
 };
-	
+
 
 //
 //	TODO
@@ -43,26 +43,26 @@ var compareCall = function(artist, compare, callback) {
 /**
  *	Returns list of each genre's generalized category
  */
-var selectGenres = function(genres, callback) {
+var selectGenres = function (genres, callback) {
 	result = {};
-	
+
 	async.each(genres,
-		function(genre, asyncCallback) {
-			tagCall(genre.name, function(data) {
+		function (genre, asyncCallback) {
+			tagCall(genre.name, function (data) {
 				var tagTopArtist = data; // get first artist name
 				var genreCategories = [];
-				for(var i = 0; i < CONST.COMPARE.length; i++) {
-					compareCall(tagTopArtist, CONST.COMPARE[i], function(result){
+				for (var i = 0; i < CONST.COMPARE.length; i++) {
+					compareCall(tagTopArtist, CONST.COMPARE[i], function (result) {
 						genreCategories.push(result);
 					});
 				}
-				result[genre.name] = genreCategories;				
+				result[genre.name] = genreCategories;
 				asyncCallback();
 			});
 		},
-		function(err){
+		function (err) {
 			callback(result);
- 		}	
+		}
 	);
 };
 
