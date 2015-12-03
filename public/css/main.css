@@ -101,12 +101,16 @@ a {
   transition: opacity, ease-out 0.2s;
   cursor: pointer;
 }
-/* line 20, ../../app/styles/sass/components/_AppForm.scss */
+/* line 19, ../../app/styles/sass/components/_AppForm.scss */
+.input-house button:hover {
+  transform: scale(1.05, 1.05);
+}
+/* line 24, ../../app/styles/sass/components/_AppForm.scss */
 .input-house img {
   width: 100%;
 }
 
-/* line 25, ../../app/styles/sass/components/_AppForm.scss */
+/* line 29, ../../app/styles/sass/components/_AppForm.scss */
 .input-username {
   display: block;
   width: 100%;
@@ -142,9 +146,9 @@ a {
   color: white;
 }
 
-/* line 47, ../../app/styles/sass/components/_AppForm.scss */
+/* line 51, ../../app/styles/sass/components/_AppForm.scss */
 .input-submit {
-  color: #222;
+  color: #000;
   font-size: 1.3em;
   cursor: pointer;
   background: none;
