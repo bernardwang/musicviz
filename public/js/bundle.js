@@ -212,11 +212,11 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 		var house = this.state.house;
 		submitGenres(genres, house, function (result) {
 			if (result) {
-				
+				this.getGenres();
 			} else {
 				alert('Unable to submit user data, please try again');
 			}
-		});
+		}.bind(this));
 	},
 	
   render: function () {
@@ -1285,9 +1285,9 @@ var submitGenres = function (genres, house, callback) {
 				console.log('DB post request error');
 				callback(null);
 			}
-			callback(res);
 		});
 	}
+	callback("done!"); // Doesnt actually matter, no errors
 };
 
 module.exports = submitGenres;

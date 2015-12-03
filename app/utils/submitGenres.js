@@ -24,9 +24,9 @@ var submitGenres = function (genres, house, callback) {
 				console.log('DB post request error');
 				callback(null);
 			}
-			callback(res);
 		});
 	}
+	callback("done!"); // Doesnt actually matter, no errors
 };
 
 module.exports = submitGenres;
