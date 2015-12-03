@@ -66,11 +66,11 @@ var MusicApp = React.createClass({
 		var house = this.state.house;
 		submitGenres(genres, house, function (result) {
 			if (result) {
-				
+				this.getGenres();
 			} else {
 				alert('Unable to submit user data, please try again');
 			}
-		});
+		}.bind(this));
 	},
 	
   render: function () {
