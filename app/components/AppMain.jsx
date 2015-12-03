@@ -18,7 +18,7 @@ var Main = React.createClass({
 		
 		return (
 			<section className={'app-main'}>
-				<UserChart title={UserTitle} data={this.props.userData} elementName={'userChart'}/>
+				<UserChart title={UserTitle} data={this.props.userData} house={this.props.house} elementName={'userChart'}/>
 				<TotalChart title={TotalTitle} data={this.props.totalData} elementName={'totalChart'}/>
 			</section>
 		)

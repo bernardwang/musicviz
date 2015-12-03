@@ -8,6 +8,7 @@ var React = require('react');
 var RadarChart = require('../utils/radarChart.js');
 
 var ajaxWrapper = require('../utils/ajaxWrapper');
+var CONST = require('../utils/constants.js');
 
 var UserChart = React.createClass({
 
@@ -32,7 +33,7 @@ var UserChart = React.createClass({
 
 		// draws chart
 		var color = d3.scale.ordinal()
-			.range(["#EDC951", "#CC333F", "#00A0B0"]);
+			.range(["#981b1e", "#fcd209", "#3758a7", "#116a35"]);
 
 		var radarChartOptions = {
 			w: width,
@@ -41,7 +42,8 @@ var UserChart = React.createClass({
 			maxValue: 0.5,
 			levels: 5,
 			roundStrokes: true,
-			color: color
+			color: color,
+			colorIndex: CONST.houseToIndex[this.props.house]
 		};
 
 		return radarChartOptions;
