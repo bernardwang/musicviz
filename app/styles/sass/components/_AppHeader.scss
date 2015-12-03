@@ -1,17 +1,34 @@
 header{
-	max-width: $max;
-	height: 100%;
+	width: 100%;
+	min-height: 800px;
 	margin-left: auto;
 	margin-right: auto;
-	padding: spacing(1);
+	padding: spacing(1) 0;
 	
 	@include type-setting(2);
-	color: white;
+	color: $highlight;
 	text-align: center;
 	
-	background-color: $highlight;
+	background-color: white;
+	transition: .2s background-color;
 	
 	.title{
 		width: 100%;
+	}
+
+	&.gryffindor {
+		background-color: $gryffindor;
+	}
+
+	&.slytherin {
+		background-color: $slytherin;
+	}
+
+	&.hufflepuff {
+		background-color: $hufflepuff;
+	}
+
+	&.ravenclaw {
+		background-color: $ravenclaw;
 	}
 }

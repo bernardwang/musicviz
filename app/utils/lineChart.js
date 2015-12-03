@@ -148,7 +148,16 @@ var lineChart = function(id, data, options) {
 		.attr("x", cfg.w-cfg.legendW)
 		.attr("y", function(d, i){return i*cfg.legendH;})
 		.attr("width", cfg.legendW)
-		.attr("height", cfg.legendH);
+		.attr("height", cfg.legendH)
+		.on('mouseover', function(d,i){
+			hoverOn(i);
+		})
+		.on('mouseout', function(d,i){
+			hoverOff(i);
+		})
+		.on('click', function(d,i){
+			toggleLine(i);
+		});
 
 	chartLegend.append("rect")
 		.attr("class", "legendSelect")
@@ -158,13 +167,7 @@ var lineChart = function(id, data, options) {
 		.attr("height", cfg.legendSquare)
 		.style("fill", function(d, i){return cfg.color(i);})
 		.style("stroke", "#CDCDCD")
-		.style("fill-opacity", cfg.legendOpacity)
-		.on('mouseover', function(d,i){
-			hoverOn(i);
-		})
-		.on('mouseout', function(d,i){
-			hoverOff(i);
-		});
+		.style("fill-opacity", cfg.legendOpacity);
 
 	chartLegend.append("text")
 		.attr("class", "legendLabel")
@@ -183,13 +186,9 @@ var lineChart = function(id, data, options) {
 	
 	// data line
 	var line = d3.svg.line()
-		.interpolate("cardinal")	// not as good as cardinal but does not go below x axis
+		.interpolate("monotone")
 		.x(function(d,i) { return i*widthLabel; })
-    .y(function(d,i) { return scale(d.value); });	
-	
-	if(cfg.roundStrokes) {
-		line.interpolate("monotone");
-	}
+    	.y(function(d,i) { return scale(d.value); });
 				
 	// Wrapper for the blobs
 	var blobWrapper = g.append("g").attr("class", "blobWrapper");
@@ -310,6 +309,8 @@ var lineChart = function(id, data, options) {
 	  });
 	}
 
+	var toggled = [true,true,true,true];
+
 	function hoverOn(index){
 		d3.selectAll(".blobPath")
 		.transition().duration(200)
@@ -346,6 +347,29 @@ var lineChart = function(id, data, options) {
 					d3.select(this).select(".legendLabel")
 						.transition().duration(200)
 						.style("fill", "#737373");
+				}
+			});
+	}
+
+	function toggleLine(index){
+		toggled[index] = !toggled[index];
+
+		d3.selectAll(".blob")
+		.transition().duration(200)
+		.style("opacity", function(d,i){
+			return (toggled[i]) ? 1 : 0;
+		});
+
+		d3.selectAll(".chartLegend")
+			.each(function (d, i) {
+				if(index === i){
+					d3.select(this).select(".legendSelect")
+						.transition().duration(200)
+						.style("opacity", (toggled[i]) ? 1 : 0.4);
+
+					d3.select(this).select(".legendLabel")
+						.transition().duration(200)
+						.style("opacity", (toggled[i]) ? 1 : 0.4);
 				}
 			});
 	}

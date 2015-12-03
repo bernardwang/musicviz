@@ -12,8 +12,7 @@ var AppHeader = React.createClass({
   render: function () {
 
 		return (
-			<header>
-				<h1 className='title'> musicviz </h1>
+			<header id={'app-header'}>
 				<AppForm submitForm={this.props.submitForm}/>
 			</header>
 		)

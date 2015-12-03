@@ -31,8 +31,9 @@ var Form = React.createClass({
 			var classname = (buttons[i] == event.target) ? 'selected' : '';
 			buttons[i].className = classname;
 		}
+		document.getElementById('app-header').className = event.target.dataset.house.toLowerCase();
 		this.setState({
-			userhouse: event.target.innerHTML	
+			userhouse: event.target.dataset.house
 		});
 	},
 
@@ -41,13 +42,21 @@ var Form = React.createClass({
 		return (
 			<form className={'input-form'} onSubmit={this.onSubmit}>
 				<div id={'input-house'}>
-					<button type="button" onClick={this.selectButton}>Gryffindor</button>
-					<button type="button" onClick={this.selectButton}>Hufflepuff</button>
-					<button type="button" onClick={this.selectButton}>Ravenclaw</button>
-					<button type="button" onClick={this.selectButton}>Slytherin</button>
+					<button type="button" onClick={this.selectButton}>
+						<img data-house="Gryffindor" src="assets/gryffindor.png"/>
+					</button>
+					<button type="button" onClick={this.selectButton}>
+						<img data-house="Hufflepuff" src="assets/hufflepuff.png"/>
+					</button>
+					<button type="button" onClick={this.selectButton}>
+						<img data-house="Ravenclaw" src="assets/ravenclaw.png"/>
+					</button>
+					<button type="button" onClick={this.selectButton}>
+						<img data-house="Slytherin" src="assets/slytherin.png"/>
+					</button>
 				</div>
-				<input className={'input-username'} placeholder='Enter your Last.fm username' ref='username' type='text'/>
-				<button className={'input-submit'} type="submit">Submit Data!</button>
+				<input className={'input-username'} placeholder='Last.fm username' ref='username' type='text'/>
+				<button className={'input-submit'} type="submit">Submit</button>
 			</form>
 		)
 		

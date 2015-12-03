@@ -32,62 +32,81 @@ a {
 
 /* line 1, ../../app/styles/sass/components/_AppHeader.scss */
 header {
-  max-width: 80rem;
-  height: 100%;
+  width: 100%;
+  min-height: 800px;
   margin-left: auto;
   margin-right: auto;
-  padding: 3rem;
+  padding: 3rem 0;
   font-size: 1.66667rem;
   line-height: 4rem;
-  color: white;
+  color: #F8725F;
   text-align: center;
-  background-color: #F8725F;
+  background-color: white;
+  transition: .2s background-color;
 }
-/* line 14, ../../app/styles/sass/components/_AppHeader.scss */
+/* line 15, ../../app/styles/sass/components/_AppHeader.scss */
 header .title {
   width: 100%;
+}
+/* line 19, ../../app/styles/sass/components/_AppHeader.scss */
+header.gryffindor {
+  background-color: #981b1e;
+}
+/* line 23, ../../app/styles/sass/components/_AppHeader.scss */
+header.slytherin {
+  background-color: #116a35;
+}
+/* line 27, ../../app/styles/sass/components/_AppHeader.scss */
+header.hufflepuff {
+  background-color: #fcd209;
+}
+/* line 31, ../../app/styles/sass/components/_AppHeader.scss */
+header.ravenclaw {
+  background-color: #3758a7;
 }
 
 /* line 1, ../../app/styles/sass/components/_AppForm.scss */
 .input-form {
   margin-top: 4rem;
 }
-/* line 4, ../../app/styles/sass/components/_AppForm.scss */
-.input-form button {
+
+/* line 6, ../../app/styles/sass/components/_AppForm.scss */
+#input-house button {
   margin: 2rem;
-  padding: 2rem;
+  padding: 0;
+  width: 20%;
   border: 0;
-  border-radius: 1rem;
-  background-color: rgba(0, 0, 0, 0.1);
-  color: white;
+  outline: none;
+  background-color: transparent;
   -moz-transition: opacity, ease-out 0.2s;
   -o-transition: opacity, ease-out 0.2s;
   -webkit-transition: opacity, ease-out 0.2s;
   transition: opacity, ease-out 0.2s;
+  cursor: pointer;
 }
-/* line 16, ../../app/styles/sass/components/_AppForm.scss */
-.input-form button:hover {
-  background-color: transparent;
-}
-/* line 20, ../../app/styles/sass/components/_AppForm.scss */
-.input-form button.selected {
-  background-color: transparent;
+/* line 22, ../../app/styles/sass/components/_AppForm.scss */
+#input-house img {
+  width: 100%;
 }
 
-/* line 32, ../../app/styles/sass/components/_AppForm.scss */
+/* line 27, ../../app/styles/sass/components/_AppForm.scss */
 .input-username {
+  display: block;
   width: 100%;
+  max-width: 300px;
   height: 5rem;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
+  margin: 2rem auto;
   padding: 2rem;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   border: 0;
-  border-radius: 1rem;
-  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
+  text-align: center;
+  font-size: 1.1em;
 }
 /* line 61, ../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/css3/_user-interface.scss */
 .input-username:-moz-placeholder {
@@ -106,9 +125,19 @@ header .title {
   color: white;
 }
 
+/* line 49, ../../app/styles/sass/components/_AppForm.scss */
+.input-submit {
+  color: #222;
+  font-size: 1.3em;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+}
+
 /* line 1, ../../app/styles/sass/components/_AppMain.scss */
 main {
-  max-width: 80rem;
+  width: 100%;
   min-height: 50rem;
   background-color: #E9EBED;
   margin-left: auto;

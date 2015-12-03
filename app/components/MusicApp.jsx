@@ -52,6 +52,7 @@ var MusicApp = React.createClass({
 	getGenres: function () {
 		getGenres(function (genres) {
 			if (genres) {
+				console.log(genres);
 				this.setState({
 					totalData: genres
 				});

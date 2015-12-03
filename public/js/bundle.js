@@ -19,22 +19,22 @@ ReactDOM.render(
 );
 
 },{"./components/MusicApp":5,"react":175,"react-dom":19}],2:[function(require,module,exports){
-//
+// 
 //	AppForm.jsx
 //
-//	User input
+//	User input 
 //
 
 var React = require('react');
 
 var Form = React.createClass({displayName: "Form",
-
+	
 	getInitialState: function () {
     return {
       userhouse: ''
     };
   },
-
+	
 	onSubmit: function (event) {
 		event.preventDefault();
 	  var name = this.refs.username.value.trim();
@@ -42,7 +42,7 @@ var Form = React.createClass({displayName: "Form",
 		if (name && house) {
 			this.props.submitForm(name, house); // hardcoded in for now
 		} else {
-			alert('Incomplete form, please try again.');
+			alert('Incomplete form, please try again.');	
 		}
 	},
 
@@ -52,36 +52,45 @@ var Form = React.createClass({displayName: "Form",
 			var classname = (buttons[i] == event.target) ? 'selected' : '';
 			buttons[i].className = classname;
 		}
+		document.getElementById('app-header').className = event.target.dataset.house.toLowerCase();
 		this.setState({
-			userhouse: event.target.innerHTML
+			userhouse: event.target.dataset.house
 		});
 	},
 
   render: function() {
-
+		
 		return (
-			React.createElement("form", {className: 'input-form', onSubmit: this.onSubmit},
-				React.createElement("div", {id: 'input-house'},
-					React.createElement("button", {type: "button", onClick: this.selectButton}, "Gryffindor"),
-					React.createElement("button", {type: "button", onClick: this.selectButton}, "Hufflepuff"),
-					React.createElement("button", {type: "button", onClick: this.selectButton}, "Ravenclaw"),
-					React.createElement("button", {type: "button", onClick: this.selectButton}, "Slytherin")
-				),
-				React.createElement("input", {className: 'input-username', placeholder: "Enter your Last.fm username", ref: "username", type: "text"}),
-				React.createElement("button", {className: 'input-submit', type: "submit"}, "Submit Data!")
+			React.createElement("form", {className: 'input-form', onSubmit: this.onSubmit}, 
+				React.createElement("div", {id: 'input-house'}, 
+					React.createElement("button", {type: "button", onClick: this.selectButton}, 
+						React.createElement("img", {"data-house": "Gryffindor", src: "assets/gryffindor.png"})
+					), 
+					React.createElement("button", {type: "button", onClick: this.selectButton}, 
+						React.createElement("img", {"data-house": "Hufflepuff", src: "assets/hufflepuff.png"})
+					), 
+					React.createElement("button", {type: "button", onClick: this.selectButton}, 
+						React.createElement("img", {"data-house": "Ravenclaw", src: "assets/ravenclaw.png"})
+					), 
+					React.createElement("button", {type: "button", onClick: this.selectButton}, 
+						React.createElement("img", {"data-house": "Slytherin", src: "assets/slytherin.png"})
+					)
+				), 
+				React.createElement("input", {className: 'input-username', placeholder: "Last.fm username", ref: "username", type: "text"}), 
+				React.createElement("button", {className: 'input-submit', type: "submit"}, "Submit")
 			)
 		)
-
+		
   }
 });
 
 module.exports = Form;
 
 },{"react":175}],3:[function(require,module,exports){
-//
+// 
 //	AppHeader.jsx
 //
-//	Header and input
+//	Header and input 
 //
 
 var React = require('react');
@@ -92,19 +101,18 @@ var AppHeader = React.createClass({displayName: "AppHeader",
   render: function () {
 
 		return (
-			React.createElement("header", null,
-				React.createElement("h1", {className: "title"}, " musicviz "),
+			React.createElement("header", {id: 'app-header'}, 
 				React.createElement(AppForm, {submitForm: this.props.submitForm})
 			)
 		)
-
+		
   }
 });
 
 module.exports = AppHeader;
 
 },{"./AppForm":2,"react":175}],4:[function(require,module,exports){
-//
+// 
 // 	AppMain.jsx
 //
 //	Main content
@@ -115,27 +123,27 @@ var UserChart = require('./UserChart');
 var TotalChart = require('./TotalChart');
 
 var Main = React.createClass({displayName: "Main",
-
+	
   render: function () {
-
+			
 		// Will not display title until data is submitted
 		var UserTitle = (this.props.name) ? this.props.name + "'s Top Genres" : '';
 		var TotalTitle = (this.props.name) ? "Current Top Genres" : '';
-
+		
 		return (
-			React.createElement("main", null,
-				React.createElement(UserChart, {title: UserTitle, data: this.props.userData, elementName: 'userChart'}),
+			React.createElement("main", null, 
+				React.createElement(UserChart, {title: UserTitle, data: this.props.userData, elementName: 'userChart'}), 
 				React.createElement(TotalChart, {title: TotalTitle, data: this.props.totalData, elementName: 'totalChart'})
 			)
 		)
-
+		
   }
 });
 
 module.exports = Main;
 
 },{"./TotalChart":6,"./UserChart":7,"react":175}],5:[function(require,module,exports){
-//
+// 
 // 	MusicApp.jsx
 //
 //	Entry point for React App
@@ -150,18 +158,18 @@ var getGenres = require('../utils/getGenres.js');
 var submitGenres = require('../utils/submitGenres.js');
 
 var MusicApp = React.createClass({displayName: "MusicApp",
-
+	
 	getInitialState: function () {
     return {
 			name: '',				// user's lastfm username
-			house: '',			// user's harry potter house
+			house: '',			// user's harry potter house 
 			userData: [],		// D3 data for userChart
 			totalData: []		// D3 data for totalChart
     };
   },
-
+	
 	componentDidMount: function () {
-		this.getGenres();
+		this.getGenres();	
 	},
 
 	/**
@@ -178,24 +186,25 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 					house: house,
 					userData: userData
 				});
-				this.submitGenres(userGenres);
+				this.submitGenres(userGenres);	
 			}
 		}.bind(this));
   },
-
+	
 	/**
 	 *	Gets total genres from DB
 	 */
 	getGenres: function () {
 		getGenres(function (genres) {
 			if (genres) {
+				console.log(genres);
 				this.setState({
 					totalData: genres
 				});
 			}
 		}.bind(this));
 	},
-
+	
 	/**
 	 *	Posts user genres to DB
 	 */
@@ -203,28 +212,28 @@ var MusicApp = React.createClass({displayName: "MusicApp",
 		var house = this.state.house;
 		submitGenres(genres, house, function (result) {
 			if (result) {
-
+				
 			} else {
 				alert('Unable to submit user data, please try again');
 			}
 		});
 	},
-
+	
   render: function () {
 		return (
-			React.createElement("div", null,
-				React.createElement(AppHeader, {submitForm: this.submitUserData}),
+			React.createElement("div", null, 
+				React.createElement(AppHeader, {submitForm: this.submitUserData}), 
 				React.createElement(AppMain, {name: this.state.name, house: this.state.house, userData: this.state.userData, totalData: this.state.totalData})
 			)
 		)
 	}
-
+		
 });
 
 module.exports = MusicApp;
 
 },{"../utils/getGenres.js":9,"../utils/getUserData.js":11,"../utils/submitGenres.js":15,"./AppHeader":3,"./AppMain":4,"react":175}],6:[function(require,module,exports){
-//
+// 
 //  TotalChart.jsx
 //
 //	D3 line chart for total collected data
@@ -236,7 +245,7 @@ var LineChart = require('../utils/lineChart.js');
 var ajaxWrapper = require('../utils/ajaxWrapper');
 
 var TotalChart = React.createClass({displayName: "TotalChart",
-
+	
 	componentDidUpdate: function () {
 		if (this.props.data.length > 0) {
 			var element = '.' + this.props.elementName;
@@ -245,7 +254,7 @@ var TotalChart = React.createClass({displayName: "TotalChart",
 			LineChart(element, data, options);
 		}
   },
-
+	
 	getChartOptions: function () {
 		var margin = {
 			top			: 50,
@@ -255,11 +264,11 @@ var TotalChart = React.createClass({displayName: "TotalChart",
 		};
 		var width = Math.min(800, window.innerWidth - 10) - margin.left - margin.right;
 		var height = Math.min(600, window.innerHeight - margin.top - margin.bottom - 20);
-
+		
 		// draws chart
 		var color = d3.scale.ordinal()
 			.range(["#CC333F", "#EDC951", "#217BB7", "#0B683E"]);
-
+		
 		var radarChartOptions = {
 			w: width,
 			h: height,
@@ -269,26 +278,26 @@ var TotalChart = React.createClass({displayName: "TotalChart",
 			roundStrokes: true,
 			color: color
 		};
-
+		
 		return radarChartOptions;
 	},
 
   render: function () {
-
+		
 		return (
-			React.createElement("div", null,
-				React.createElement("h1", null, this.props.title),
+			React.createElement("div", null, 
+				React.createElement("h1", null, this.props.title), 
 				React.createElement("div", {className: this.props.elementName})
 			)
 		)
-
+		
   }
 });
 
 module.exports = TotalChart;
 
 },{"../utils/ajaxWrapper":8,"../utils/lineChart.js":13,"react":175}],7:[function(require,module,exports){
-//
+// 
 //  UserChart.jsx
 //
 //	D3 radar chart for user genres
@@ -340,8 +349,8 @@ var UserChart = React.createClass({displayName: "UserChart",
 	render: function () {
 
 		return (
-			React.createElement("div", null,
-				React.createElement("h1", null, this.props.title),
+			React.createElement("div", null, 
+				React.createElement("h1", null, this.props.title), 
 				React.createElement("div", {className: this.props.elementName})
 			)
 		)
@@ -354,7 +363,7 @@ module.exports = UserChart;
 },{"../utils/ajaxWrapper":8,"../utils/radarChart.js":14,"react":175}],8:[function(require,module,exports){
 //
 //	ajaxWrapper.js
-//
+//	
 //	Convienent wrapper function
 //
 
@@ -379,7 +388,7 @@ module.exports = ajaxWrapper;
 },{"jQuery":18}],9:[function(require,module,exports){
 //
 //	getGenres.js
-//
+//	
 //	Gets aggregated genres from DB
 //
 
@@ -391,9 +400,9 @@ var ajaxWrapper = require('./ajaxWrapper');
 var getCall = function (callback) {
 	var url = 'http://localhost:3001/api/music/genres'; // 3001 for browsersync local dev
 	ajaxWrapper(url, 'GET', null, 'json', function (res) {
-		callback(res)
+		callback(res);
 	});
-}
+};
 
 /**
  *	Returns list of total genres
@@ -431,7 +440,7 @@ module.exports = getGenres;
 },{"./ajaxWrapper":8}],10:[function(require,module,exports){
 //
 //	getUserArtists.js
-//
+//	
 //	Gets a list of top artists from a Last.fm user
 //
 
@@ -517,7 +526,7 @@ var getUserGenres = require('./getUserGenres.js');
 
 /**
  *	Returns list of users top genres in two formats,
- *	Map of genre to value for submitting to DB &
+ *	Map of genre to value for submitting to DB & 
  *	List of label/value objects for D3 chart
  */
 var getUserData = function (name, callback) {
@@ -527,7 +536,7 @@ var getUserData = function (name, callback) {
 		}
 		getUserGenres(userArtists, function (userGenres) {
 			if (!userGenres) {
-				callback(null)
+				callback(null);
 			}
 
 			// Formats genres for D3 chart
@@ -553,7 +562,7 @@ module.exports = getUserData;
 },{"./getUserArtists.js":10,"./getUserGenres.js":12}],12:[function(require,module,exports){
 //
 //	getUserGenres.js
-//
+//	
 //	Combines list of artists into list of genres
 //
 
@@ -586,17 +595,17 @@ var getUserGenres = function (artists, callback) {
 	}
 
 	callback(result);
-}
+};
 
 module.exports = getUserGenres;
 
 },{}],13:[function(require,module,exports){
-//
+// 
 // 	lineChart.js
 //
 //	Adapted from RadarChart by Nadieh Bremer
 //
-
+	
 var lineChart = function(id, data, options) {
 	// default options
 	var cfg = {
@@ -626,17 +635,17 @@ var lineChart = function(id, data, options) {
 	 legendSelectOpacity: 0.9,
 	 legendLabels: ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
 	};
-
+	
 	//Put all of the options into a variable called cfg
-	if('undefined' !== typeof options){
+	if ('undefined' !== typeof options) {
 	  for(var i in options){
 		if('undefined' !== typeof options[i]){ cfg[i] = options[i]; }
 	  }
 	}
-
+	
 	//If the supplied maxValue is smaller than the actual one, replace by the max in the data
 	var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
-
+		
 	var allLabels = (data[0].map(function(i, j){return i.label}));	// Names of each label
 	var numLabels = allLabels.length;				// The number of different labels
 	var widthLabel = cfg.w/(numLabels-1);		// numLabels-1 to fit entire width of chart
@@ -646,28 +655,28 @@ var lineChart = function(id, data, options) {
 	var scale = d3.scale.linear()
 		.range([cfg.h, 0])				// max height to 0, 0 is bottom of chart
 		.domain([0, maxValue]);		// scale to maxValue
-
+		
 	/////////////////////////////////////////////////////////
 	//////////// Create the container SVG and g /////////////
 	/////////////////////////////////////////////////////////
 
 	//Remove whatever chart with the same id/class was present before
 	d3.select(id).select("svg").remove();
-
+	
 	//Initiate the radar chart SVG with margins
 	var svg = d3.select(id).append("svg")
 		.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
 		.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
 		.attr("class", "line"+id);
-
+			
 	//Append a g element
 	var g = svg.append("g")
 			.attr("transform", "translate(" + (cfg.margin.left) + "," + (cfg.margin.top) + ")");
-
+	
 	/////////////////////////////////////////////////////////
 	////////// Glow filter for some extra pizzazz ///////////
 	/////////////////////////////////////////////////////////
-
+	
 	//Filter for the outside glow
 	var filter = g.append('defs').append('filter').attr('id','glow'),
 		feGaussianBlur = 	filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','coloredBlur'),
@@ -678,7 +687,7 @@ var lineChart = function(id, data, options) {
 	/////////////////////////////////////////////////////////
 	//////////////////// Draw the grid //////////////////////
 	/////////////////////////////////////////////////////////
-
+	
 	// Wrapper for the grid
 	var gridWrapper = g.append("g").attr("class", "gridWrapper");
 
@@ -711,11 +720,11 @@ var lineChart = function(id, data, options) {
 	/////////////////////////////////////////////////////////
 	//////////////////// Draw the axes //////////////////////
 	/////////////////////////////////////////////////////////
-
+	
 	var gridLabel = gridWrapper.selectAll(".gridLabel")
 		.data(allLabels)
 		.enter();
-
+	
 	//Append the labels at each axis
 	gridLabel.append("text")
 		.attr("class", "gridLegend")
@@ -741,7 +750,16 @@ var lineChart = function(id, data, options) {
 		.attr("x", cfg.w-cfg.legendW)
 		.attr("y", function(d, i){return i*cfg.legendH;})
 		.attr("width", cfg.legendW)
-		.attr("height", cfg.legendH);
+		.attr("height", cfg.legendH)
+		.on('mouseover', function(d,i){
+			hoverOn(i);
+		})
+		.on('mouseout', function(d,i){
+			hoverOff(i);
+		})
+		.on('click', function(d,i){
+			toggleLine(i);
+		});
 
 	chartLegend.append("rect")
 		.attr("class", "legendSelect")
@@ -751,13 +769,7 @@ var lineChart = function(id, data, options) {
 		.attr("height", cfg.legendSquare)
 		.style("fill", function(d, i){return cfg.color(i);})
 		.style("stroke", "#CDCDCD")
-		.style("fill-opacity", cfg.legendOpacity)
-		.on('mouseover', function(d,i){
-			hoverOn(i);
-		})
-		.on('mouseout', function(d,i){
-			hoverOff(i);
-		});
+		.style("fill-opacity", cfg.legendOpacity);
 
 	chartLegend.append("text")
 		.attr("class", "legendLabel")
@@ -769,21 +781,17 @@ var lineChart = function(id, data, options) {
 	/////////////////////////////////////////////////////////
 	///////////// Draw the radar chart blobs ////////////////
 	/////////////////////////////////////////////////////////
-
+	
 	//
-	// TODO: find way to use cardinal interpolation
+	// TODO: find way to use cardinal interpolation 
 	//
-
+	
 	// data line
 	var line = d3.svg.line()
-		.interpolate("cardinal")	// not as good as cardinal but does not go below x axis
+		.interpolate("monotone")
 		.x(function(d,i) { return i*widthLabel; })
-    .y(function(d,i) { return scale(d.value); });
-
-	if(cfg.roundStrokes) {
-		line.interpolate("monotone");
-	}
-
+    	.y(function(d,i) { return scale(d.value); });
+				
 	// Wrapper for the blobs
 	var blobWrapper = g.append("g").attr("class", "blobWrapper");
 
@@ -796,14 +804,14 @@ var lineChart = function(id, data, options) {
 		.attr("y",0)
 		.attr("width",cfg.w)
 		.attr("height",cfg.h);
-
+	
 	// area under line
 	var area = d3.svg.area()
 		.interpolate("monotone")	// not as good as cardinal but does not go below x axis
 		.x(function(d,i) { return i*widthLabel; })
 		.y0(cfg.h)
 		.y1(function(d) { return scale(d.value); });
-
+	
 	// Append area blobs
 	blobs.append("path")
 		.attr("d", function(d,i) { return area(d,i); })
@@ -816,7 +824,7 @@ var lineChart = function(id, data, options) {
 		.on('mouseout', function(d,i){
 			hoverOff(i)
 		});
-
+		
 	// Create line paths
 	blobs.append("path")
 		.attr("class", "lineStroke")
@@ -824,20 +832,20 @@ var lineChart = function(id, data, options) {
 		.style("stroke-width", cfg.strokeWidth + "px")
 		.style("stroke", function(d,i) { return cfg.color(i); })
 		.style("fill", "none")
-		.style("filter" , "url(#glow)");
-
+		.style("filter" , "url(#glow)");		
+	
 	// Removes tooltips for zero data point
 	var trimDataPoints = function(d) {
 		var data = [];
 			d.map(function(obj, i) {
 				if(obj.value != 0) {
 					obj.index = i;
-					data.push(obj);
+					data.push(obj);	
 				}
 			});
 		return data;
 	};
-
+	
 	// Append the data point circles and tooltip
 	blobs.selectAll(".lineCircle")
 		.data(function(d,i) {
@@ -865,18 +873,18 @@ var lineChart = function(id, data, options) {
 				tooltip.transition().duration(200)
 					.style("opacity", 0);
 			});
-
+	
 	//Set up the small tooltip for when you hover over a circle
 	var tooltip = blobWrapper.append("text")
 		.attr("class", "lineToolTip")
 		.style("opacity", 0);
-
+	
 	/////////////////////////////////////////////////////////
 	/////////////////// Helper Function /////////////////////
 	/////////////////////////////////////////////////////////
 
 	//Taken from http://bl.ocks.org/mbostock/7555321
-	//Wraps SVG text
+	//Wraps SVG text	
 	function wrap(text, width) {
 	  text.each(function() {
 		var text = d3.select(this),
@@ -889,7 +897,7 @@ var lineChart = function(id, data, options) {
 			x = text.attr("x"),
 			dy = parseFloat(text.attr("dy")),
 			tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-
+			
 		while (word = words.pop()) {
 		  line.push(word);
 		  tspan.text(line.join(" "));
@@ -902,6 +910,8 @@ var lineChart = function(id, data, options) {
 		}
 	  });
 	}
+
+	var toggled = [true,true,true,true];
 
 	function hoverOn(index){
 		d3.selectAll(".blobPath")
@@ -943,7 +953,30 @@ var lineChart = function(id, data, options) {
 			});
 	}
 
+	function toggleLine(index){
+		toggled[index] = !toggled[index];
 
+		d3.selectAll(".blob")
+		.transition().duration(200)
+		.style("opacity", function(d,i){
+			return (toggled[i]) ? 1 : 0;
+		});
+
+		d3.selectAll(".chartLegend")
+			.each(function (d, i) {
+				if(index === i){
+					d3.select(this).select(".legendSelect")
+						.transition().duration(200)
+						.style("opacity", (toggled[i]) ? 1 : 0.4);
+
+					d3.select(this).select(".legendLabel")
+						.transition().duration(200)
+						.style("opacity", (toggled[i]) ? 1 : 0.4);
+				}
+			});
+	}
+
+	
 }//RadarChart
 
 module.exports = lineChart;
@@ -955,7 +988,7 @@ module.exports = lineChart;
 ////////////////// VisualCinnamon.com ///////////////////
 /////////// Inspired by the code of alangrafu ///////////
 /////////////////////////////////////////////////////////
-
+	
 var RadarChart = function(id, data, options) {
 	var cfg = {
 	 w: 600,				//Width of the circle
@@ -972,49 +1005,49 @@ var RadarChart = function(id, data, options) {
 	 roundStrokes: false,	//If true the area and stroke will follow a round path (cardinal-closed)
 	 color: d3.scale.category10()	//Color function
 	};
-
+	
 	//Put all of the options into a variable called cfg
 	if('undefined' !== typeof options){
 	  for(var i in options){
 		if('undefined' !== typeof options[i]){ cfg[i] = options[i]; }
 	  }//for i
 	}//if
-
+	
 	//If the supplied maxValue is smaller than the actual one, replace by the max in the data
 	var maxValue = Math.max(cfg.maxValue, d3.max(data, function(i){return d3.max(i.map(function(o){return o.value;}))}));
-
+		
 	var allAxis = (data[0].map(function(i, j){return i.label})),	//Names of each axis
 		total = allAxis.length,					//The number of different axes
 		radius = Math.min(cfg.w/2, cfg.h/2), 	//Radius of the outermost circle
 		Format = d3.format('%'),			 	//Percentage formatting
 		angleSlice = Math.PI * 2 / total;		//The width in radians of each "slice"
-
+	
 	//Scale for the radius
 	var rScale = d3.scale.linear()
 		.range([0, radius])
 		.domain([0, maxValue]);
-
+		
 	/////////////////////////////////////////////////////////
 	//////////// Create the container SVG and g /////////////
 	/////////////////////////////////////////////////////////
 
 	//Remove whatever chart with the same id/class was present before
 	d3.select(id).select("svg").remove();
-
+	
 	//Initiate the radar chart SVG
 	var svg = d3.select(id).append("svg")
 			.attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
 			.attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom)
 			.attr("class", "radar"+id);
-
-	//Append a g element
+			
+	//Append a g element		
 	var g = svg.append("g")
 			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")");
-
+	
 	/////////////////////////////////////////////////////////
 	////////// Glow filter for some extra pizzazz ///////////
 	/////////////////////////////////////////////////////////
-
+	
 	//Filter for the outside glow
 	var filter = g.append('defs').append('filter').attr('id','glow'),
 		feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','coloredBlur'),
@@ -1025,10 +1058,10 @@ var RadarChart = function(id, data, options) {
 	/////////////////////////////////////////////////////////
 	/////////////// Draw the Circular grid //////////////////
 	/////////////////////////////////////////////////////////
-
+	
 	//Wrapper for the grid & axes
 	var axisGrid = g.append("g").attr("class", "axisWrapper");
-
+	
 	//Draw the background circles
 	axisGrid.selectAll(".levels")
 	   .data(d3.range(1,(cfg.levels+1)).reverse())
@@ -1056,7 +1089,7 @@ var RadarChart = function(id, data, options) {
 	/////////////////////////////////////////////////////////
 	//////////////////// Draw the axes //////////////////////
 	/////////////////////////////////////////////////////////
-
+	
 	//Create the straight lines radiating outward from the center
 	var axis = axisGrid.selectAll(".axis")
 		.data(allAxis)
@@ -1087,24 +1120,24 @@ var RadarChart = function(id, data, options) {
 	/////////////////////////////////////////////////////////
 	///////////// Draw the radar chart blobs ////////////////
 	/////////////////////////////////////////////////////////
-
+	
 	//The radial line function
 	var radarLine = d3.svg.line.radial()
 		.interpolate("linear-closed")
 		.radius(function(d) { return rScale(d.value); })
 		.angle(function(d,i) {	return i*angleSlice; });
-
+		
 	if(cfg.roundStrokes) {
 		radarLine.interpolate("cardinal-closed");
 	}
-
-	//Create a wrapper for the blobs
+				
+	//Create a wrapper for the blobs	
 	var blobWrapper = g.selectAll(".radarWrapper")
 		.data(data)
 		.enter().append("g")
 		.attr("class", "radarWrapper");
-
-	//Append the backgrounds
+			
+	//Append the backgrounds	
 	blobWrapper
 		.append("path")
 		.attr("class", "radarArea")
@@ -1115,11 +1148,11 @@ var RadarChart = function(id, data, options) {
 			//Dim all blobs
 			d3.selectAll(".radarArea")
 				.transition().duration(200)
-				.style("fill-opacity", 0.1);
+				.style("fill-opacity", 0.1); 
 			//Bring back the hovered over blob
 			d3.select(this)
 				.transition().duration(200)
-				.style("fill-opacity", 0.7);
+				.style("fill-opacity", 0.7);	
 		})
 		.on('mouseout', function(){
 			//Bring back all blobs
@@ -1127,16 +1160,16 @@ var RadarChart = function(id, data, options) {
 				.transition().duration(200)
 				.style("fill-opacity", cfg.opacityArea);
 		});
-
-	//Create the outlines
+		
+	//Create the outlines	
 	blobWrapper.append("path")
 		.attr("class", "radarStroke")
 		.attr("d", function(d,i) { return radarLine(d); })
 		.style("stroke-width", cfg.strokeWidth + "px")
 		.style("stroke", function(d,i) { return cfg.color(i); })
 		.style("fill", "none")
-		.style("filter" , "url(#glow)");
-
+		.style("filter" , "url(#glow)");		
+	
 	//Append the circles
 	blobWrapper.selectAll(".radarCircle")
 		.data(function(d,i) { return d; })
@@ -1151,13 +1184,13 @@ var RadarChart = function(id, data, options) {
 	/////////////////////////////////////////////////////////
 	//////// Append invisible circles for tooltip ///////////
 	/////////////////////////////////////////////////////////
-
+	
 	//Wrapper for the invisible circles on top
 	var blobCircleWrapper = g.selectAll(".radarCircleWrapper")
 		.data(data)
 		.enter().append("g")
 		.attr("class", "radarCircleWrapper");
-
+		
 	//Append a set of invisible circles on top for the mouseover pop-up
 	blobCircleWrapper.selectAll(".radarInvisibleCircle")
 		.data(function(d,i) { return d; })
@@ -1171,7 +1204,7 @@ var RadarChart = function(id, data, options) {
 		.on("mouseover", function(d,i) {
 			newX =  parseFloat(d3.select(this).attr('cx')) - 10;
 			newY =  parseFloat(d3.select(this).attr('cy')) - 10;
-
+					
 			tooltip
 				.attr('x', newX)
 				.attr('y', newY)
@@ -1183,18 +1216,18 @@ var RadarChart = function(id, data, options) {
 			tooltip.transition().duration(200)
 				.style("opacity", 0);
 		});
-
+		
 	//Set up the small tooltip for when you hover over a circle
 	var tooltip = g.append("text")
 		.attr("class", "tooltip")
 		.style("opacity", 0);
-
+	
 	/////////////////////////////////////////////////////////
 	/////////////////// Helper Function /////////////////////
 	/////////////////////////////////////////////////////////
 
 	//Taken from http://bl.ocks.org/mbostock/7555321
-	//Wraps SVG text
+	//Wraps SVG text	
 	function wrap(text, width) {
 	  text.each(function() {
 		var text = d3.select(this),
@@ -1207,7 +1240,7 @@ var RadarChart = function(id, data, options) {
 			x = text.attr("x"),
 			dy = parseFloat(text.attr("dy")),
 			tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-
+			
 		while (word = words.pop()) {
 		  line.push(word);
 		  tspan.text(line.join(" "));
@@ -1219,8 +1252,8 @@ var RadarChart = function(id, data, options) {
 		  }
 		}
 	  });
-	}//wrap
-
+	}//wrap	
+	
 }//RadarChart
 
 module.exports = RadarChart;
@@ -1228,7 +1261,7 @@ module.exports = RadarChart;
 },{}],15:[function(require,module,exports){
 //
 //	submitGenres.js
-//
+//	
 //	Posts User genres to DB
 //
 
@@ -15091,7 +15124,6 @@ var HTMLDOMPropertyConfig = {
     multiple: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
     muted: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
     name: null,
-    nonce: MUST_USE_ATTRIBUTE,
     noValidate: HAS_BOOLEAN_VALUE,
     open: HAS_BOOLEAN_VALUE,
     optimum: null,
@@ -15103,7 +15135,6 @@ var HTMLDOMPropertyConfig = {
     readOnly: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
     rel: null,
     required: HAS_BOOLEAN_VALUE,
-    reversed: HAS_BOOLEAN_VALUE,
     role: MUST_USE_ATTRIBUTE,
     rows: MUST_USE_ATTRIBUTE | HAS_POSITIVE_NUMERIC_VALUE,
     rowSpan: null,
@@ -15549,7 +15580,6 @@ assign(React, {
 });
 
 React.__SECRET_DOM_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOM;
-React.__SECRET_DOM_SERVER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOMServer;
 
 module.exports = React;
 },{"./Object.assign":41,"./ReactDOM":54,"./ReactDOMServer":64,"./ReactIsomorphic":82,"./deprecated":125}],44:[function(require,module,exports){
@@ -25758,7 +25788,7 @@ module.exports = ReactUpdates;
 
 'use strict';
 
-module.exports = '0.14.3';
+module.exports = '0.14.2';
 },{}],104:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -30588,7 +30618,7 @@ module.exports = performanceNow;
  *
  * @providesModule shallowEqual
  * @typechecks
- *
+ * 
  */
 
 'use strict';

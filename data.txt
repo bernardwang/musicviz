@@ -1,9 +1,9 @@
 bernard				bw-vbnm 			hufflepuff
-noah					noahjl1				hufflepuff
+noah				noahjl1				hufflepuff
 claudia				cnadolny			hufflepuff
-aswin					azure17				hufflepuff
+aswin				azure17				hufflepuff
 
 lawrence			guapo15				gryffindor
-alec					AlecMyBallz		gryffindor
+alec				AlecMyBallz			gryffindor
 
-david					dpzmick				ravenclaw
+david				dpzmick				ravenclaw
