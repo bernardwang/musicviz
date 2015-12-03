@@ -45,7 +45,7 @@ var getUserArtists = function (username, callback) {
 	userCall(username, limit, function (res) {
 		if (res.error) {
 			alert('Invalid username, please try again.');
-			callback(null);
+			return ( callback(null) );
 		}
 
 		// array of artist objects
@@ -53,10 +53,10 @@ var getUserArtists = function (username, callback) {
 
 		// async loop, get artist info
 		async.each(artists,
-			function (artist, asyncCallback) {
+			function (artist, next) {
 				artistCall(artist.name, function (res) {
-					if (res.error) {
-						asyncCallback();
+					if (res.error) {	// Error finding artist, move on
+						next();
 					}
 
 					result.push({
@@ -65,12 +65,13 @@ var getUserArtists = function (username, callback) {
 						"plays": res.artist.stats.playcount,
 						"count": artist.playcount
 					});
-					asyncCallback();
+
+					next();
 				});
 			},
 			function (err) {
 				if (err) {
-					callback(null);
+					return ( callback(null) );
 				}
 				callback(result);
 			}

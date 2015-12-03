@@ -27,14 +27,14 @@ var getGenres = function (callback) {
 	getCall(function (res) {
 		if (!res) {
 			console.log('DB get request error');
-			callback(null);
+			return( callback(null) );
 		}
 
 		// format res
 		for (var i = 0; i < Math.min(limit, res.length); i++) {
 			var genre = res[i];
-			for (var n = 0; n < genre.personality.length; n++) {
-				var house = genre.personality[n];
+			for (var n = 0; n < genre.house.length; n++) {
+				var house = genre.house[n];
 				result[n].push({
 					'label': genre.name,
 					'value': house.percent

@@ -52,7 +52,6 @@ var MusicApp = React.createClass({
 	getGenres: function () {
 		getGenres(function (genres) {
 			if (genres) {
-				console.log(genres);
 				this.setState({
 					totalData: genres
 				});
@@ -64,12 +63,11 @@ var MusicApp = React.createClass({
 	 *	Posts user genres to DB
 	 */
 	submitGenres: function (genres) {
+		var name = this.state.name;
 		var house = this.state.house;
-		submitGenres(genres, house, function (result) {
+		submitGenres(genres, name, house, function (result) {
 			if (result) {
 				this.getGenres();
-			} else {
-				alert('Unable to submit user data, please try again');
 			}
 		}.bind(this));
 	},

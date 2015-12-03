@@ -5,23 +5,22 @@
 //
 
 var mongoose = require('mongoose');
-var Personality = require('./Personality');
+var House = require('./House');
 
 var Schema = mongoose.Schema;
-
 var GenreSchema = new Schema({
 	name				: String, // genre name
 	value				: { type: Number, default: 0 },	// total combined percentages
 	count				: { type: Number, default: 0 },	// total entries
 	percent			: { type: Number, default: 0 },	// average percentage
-	personality	: [Personality], // corresponding categories
+	house				: [House], // corresponding categories
 	category		: Number // number representing generalized genre category, not yet used
 });
 
 /**
- *	Map to get corresponding personality index
+ *	Map to get corresponding House index
  */
-GenreSchema.statics.PERSONALITY_CONST = {
+GenreSchema.statics.HOUSE_CONST = {
 	'Gryffindor'	: 0,
 	'Hufflepuff'	: 1,
 	'Ravenclaw'		: 2,
@@ -38,15 +37,15 @@ GenreSchema.statics.initGenre = function (callback) {
 		value				: 0,
 		count				: 0,
 		percent			: 0,
-		personality	: [],
+		house				: [],
 		category		: 0 // currently unused
 	});
 
 	for (var i = 0; i < 4; i++) {
-		result.personality.push(result.personality.create({
+		result.house.push(result.house.create({
 			value				: 0,
 			count				: 0,
-			personality	: 0
+			house	: 0
 		}));
 	}
 
@@ -54,9 +53,9 @@ GenreSchema.statics.initGenre = function (callback) {
 };
 
 /**
- *	Deletes entire database contents
+ *	Deletes all genres in DB
  */
-GenreSchema.statics.deleteCommits = function (err, callback) {
+GenreSchema.statics.deleteAll = function (callback) {
 	console.log('DELETE ALL');
 	Genre.find().remove().exec(); // nukes db, pretty lazy
 	callback(null);

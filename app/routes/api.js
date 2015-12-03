@@ -5,15 +5,15 @@
 //
 
 var Genre = require('../models/Genre');	
-//var Artist = require('../models/Artist');	
+var User = require('../models/User');
 
-module.exports = function(app) {
+var api = function (app) {
 	
 	/**
 	 *		GET - gets all genre data
 	 */
 	app.get('/api/music/genres', function(req, res) {
-    console.log('GET');
+    console.log('GET GENRES');
 		
 		Genre
 		.find({})
@@ -22,7 +22,7 @@ module.exports = function(app) {
 		.exec(function(err, genres) {
     	if(err){
 				console.log(err);
-    	  res.send(null);
+    	  res.json(null);
 			}
     	res.json(genres); 
     });
@@ -30,15 +30,14 @@ module.exports = function(app) {
 	
 	/**
 	 *		POST - add genre data
-	 *		TODO allow list of genres to be added with one ajax call
 	 */
 	app.post('/api/music/genres', function(req, res) {
-		console.log('POST');
+		console.log('POST GENRES');
 		
 		Genre.findOne({ 'name': req.body.name }, function(err, genre) {
 			if(err) {
 				console.log(err);
-				res.send(null);
+				res.json(null);
 			}
 			
 			if(!genre) {	// Genre does not already exist in db, create new
@@ -52,22 +51,46 @@ module.exports = function(app) {
 			genre.percent = genre.value/genre.count;
 			
 			// Set specific personality value and count
-			var personalityIndex = Genre.PERSONALITY_CONST[req.body.personality];
-			var personality = genre.personality[personalityIndex];
-			personality.value += parseFloat(req.body.value);
-			personality.count += 1;
-			personality.percent = personality.value/personality.count;
+			var houseIndex = Genre.HOUSE_CONST[req.body.house];
+			var house = genre.house[houseIndex];
+			house.value += parseFloat(req.body.value);
+			house.count += 1;
+			house.percent = house.value/house.count;
 			
 			// Save result to database
 			genre.save(function(err) {
 				if(err) {
 					console.log(err)
-					res.send(null);
+					res.json(null);
 				}
-
 				res.json(genre);
 			});
 
 		});
-  });  
+  });
+
+	/**
+	 *		POST - add username
+	 */
+	app.post('/api/music/users', function(req, res) {
+		User.findOne({ 'name': req.body.name }, function(err, user) {
+			if (err || user) {	// Error, or user already exists
+				console.log('USER EXISTS');
+				res.json(null);
+			} else {						// Create new user
+				console.log('ADD USER');
+				User.create({
+					name : req.body.name,
+				}, function (err, newUser) {
+					if (err) {
+						console.log(err);
+						res.json(null);
+					}
+					res.json(newUser);
+				});
+			};
+		});
+	});
 }
+
+module.exports = api;

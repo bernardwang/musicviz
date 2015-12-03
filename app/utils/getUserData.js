@@ -9,11 +9,11 @@ var getUserGenres = require('./getUserGenres.js');
 var getUserData = function (name, callback) {
 	getUserArtists(name, function (userArtists) {
 		if (!userArtists) {
-			callback(null);
+			return ( callback(null) );
 		}
 		getUserGenres(userArtists, function (userGenres) {
 			if (!userGenres) {
-				callback(null);
+				return ( callback(null) );
 			}
 
 			// Formats genres for D3 chart

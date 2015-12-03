@@ -5,15 +5,14 @@
 //
 
 var mongoose = require('mongoose');
-var Personality = require('./Personality');
+var House = require('./House');
 
 var Schema = mongoose.Schema;
-
 var ArtistSchema = new Schema({
 	name: String, // artist name
 	value: {type: Number, default: 0}, // total combined rankings
 	count: {type: Number, default: 0}, // total entries
-	houses: [Personality] // corresponding categories
+	houses: [House] // corresponding categories
 });
 
 /**
@@ -25,7 +24,7 @@ ArtistSchema.statics.addArtist = function (err, data, callback) {
 			name: String,
 			value: Number,
 			count: Number,
-			houses: [Personality],
+			houses: [House],
 			order: item.order,
 			revision: item.revision,
 			msg: item.msg,
