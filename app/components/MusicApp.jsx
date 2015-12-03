@@ -76,10 +76,10 @@ var MusicApp = React.createClass({
 	
   render: function () {
 		return (
-			<div>
+			<main className={'app'}>
 				<AppHeader submitForm={this.submitUserData}/>
 				<AppMain name={this.state.name} house={this.state.house} userData={this.state.userData} totalData={this.state.totalData}/>
-			</div>
+			</main>
 		)
 	}
 		

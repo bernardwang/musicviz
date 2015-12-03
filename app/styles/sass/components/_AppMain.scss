@@ -1,13 +1,14 @@
-main{
+.app-main{
 	width: 100%;
 	min-height: 50rem;
 	background-color: $white;
 	
 	margin-left: auto;
 	margin-right: auto;
-	padding: spacing(1);
+	padding: spacing(4);
+	@include box-sizing(border-box);
 	
 	@include type-setting(2);
 	color: $black;
 	text-align: center;
-}	
+}

@@ -16,7 +16,7 @@ var submitGenres = function (genres, house, callback) {
 		var data = {
 			name: key,
 			value: genres[key],
-			personality: house
+			house: house
 		};
 
 		ajaxWrapper(url, 'POST', data, 'json', function (res) {

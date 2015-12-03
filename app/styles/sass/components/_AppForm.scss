@@ -1,19 +1,17 @@
 .input-form {
-	margin-top: spacing(2);
+	margin: spacing(2);
 }
 
-#input-house{
+.input-house{
 	button{
+		width: 20%;
 		margin: spacing(0);
 		padding: 0;
-
-		width: 20%;
 		
 		border: 0;
 		outline: none;
 		
 		background-color: rgba(0, 0, 0, 0);
-		
 		@include transition(opacity, .2s ease-out);
 
 		cursor: pointer; 
@@ -37,7 +35,7 @@
 	border-radius: 5px;
 	outline: none;
 	
-	background-color: rgba(0, 0, 0, .6);
+	background-color: rgba(0, 0, 0, .5);
 	color: white;
 
 	text-align: center;

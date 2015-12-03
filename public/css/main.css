@@ -1,3 +1,7 @@
+@font-face {
+  font-family: 'hp';
+  src: url(../assets/font/HARRYP__.TTF);
+}
 /* line 5, ../../app/styles/sass/base/_base.scss */
 html, body {
   width: 100%;
@@ -11,70 +15,83 @@ html, body {
 }
 
 /* line 18, ../../app/styles/sass/base/_base.scss */
+input, button {
+  font-family: 'Cabin', serif;
+}
+
+/* line 22, ../../app/styles/sass/base/_base.scss */
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-/* line 22, ../../app/styles/sass/base/_base.scss */
+/* line 26, ../../app/styles/sass/base/_base.scss */
 hr {
   border-style: solid;
 }
 
-/* line 26, ../../app/styles/sass/base/_base.scss */
+/* line 30, ../../app/styles/sass/base/_base.scss */
 a {
   text-decoration: none;
 }
 
-/* line 34, ../../app/styles/sass/base/_base.scss */
+/* line 38, ../../app/styles/sass/base/_base.scss */
 .hidden {
   display: none;
 }
 
 /* line 1, ../../app/styles/sass/components/_AppHeader.scss */
-header {
+.app-header {
   width: 100%;
-  min-height: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 3rem 0;
+  height: 100vh;
+  padding: 0;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  -webkit-flex-direction: row;
+  -webkit-justify-content: center;
+  -webkit-align-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
   font-size: 1.66667rem;
   line-height: 4rem;
-  color: #F8725F;
   text-align: center;
   background-color: white;
   transition: .2s background-color;
 }
-/* line 15, ../../app/styles/sass/components/_AppHeader.scss */
-header .title {
-  width: 100%;
-}
 /* line 19, ../../app/styles/sass/components/_AppHeader.scss */
-header.gryffindor {
+.app-header .title {
+  font-size: 10rem;
+  font-family: 'hp', 'Cabin', Helvetica;
+}
+/* line 24, ../../app/styles/sass/components/_AppHeader.scss */
+.app-header.gryffindor {
   background-color: #981b1e;
 }
-/* line 23, ../../app/styles/sass/components/_AppHeader.scss */
-header.slytherin {
+/* line 25, ../../app/styles/sass/components/_AppHeader.scss */
+.app-header.slytherin {
   background-color: #116a35;
 }
-/* line 27, ../../app/styles/sass/components/_AppHeader.scss */
-header.hufflepuff {
+/* line 26, ../../app/styles/sass/components/_AppHeader.scss */
+.app-header.hufflepuff {
   background-color: #fcd209;
 }
-/* line 31, ../../app/styles/sass/components/_AppHeader.scss */
-header.ravenclaw {
+/* line 27, ../../app/styles/sass/components/_AppHeader.scss */
+.app-header.ravenclaw {
   background-color: #3758a7;
 }
 
 /* line 1, ../../app/styles/sass/components/_AppForm.scss */
 .input-form {
-  margin-top: 4rem;
+  margin: 4rem;
 }
 
 /* line 6, ../../app/styles/sass/components/_AppForm.scss */
-#input-house button {
+.input-house button {
+  width: 20%;
   margin: 2rem;
   padding: 0;
-  width: 20%;
   border: 0;
   outline: none;
   background-color: transparent;
@@ -84,12 +101,12 @@ header.ravenclaw {
   transition: opacity, ease-out 0.2s;
   cursor: pointer;
 }
-/* line 22, ../../app/styles/sass/components/_AppForm.scss */
-#input-house img {
+/* line 20, ../../app/styles/sass/components/_AppForm.scss */
+.input-house img {
   width: 100%;
 }
 
-/* line 27, ../../app/styles/sass/components/_AppForm.scss */
+/* line 25, ../../app/styles/sass/components/_AppForm.scss */
 .input-username {
   display: block;
   width: 100%;
@@ -103,7 +120,7 @@ header.ravenclaw {
   border: 0;
   border-radius: 5px;
   outline: none;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
   text-align: center;
   font-size: 1.1em;
@@ -125,7 +142,7 @@ header.ravenclaw {
   color: white;
 }
 
-/* line 49, ../../app/styles/sass/components/_AppForm.scss */
+/* line 47, ../../app/styles/sass/components/_AppForm.scss */
 .input-submit {
   color: #222;
   font-size: 1.3em;
@@ -136,13 +153,16 @@ header.ravenclaw {
 }
 
 /* line 1, ../../app/styles/sass/components/_AppMain.scss */
-main {
+.app-main {
   width: 100%;
   min-height: 50rem;
   background-color: #E9EBED;
   margin-left: auto;
   margin-right: auto;
-  padding: 3rem;
+  padding: 6rem;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   font-size: 1.66667rem;
   line-height: 4rem;
   color: #333;
