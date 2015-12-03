@@ -32,7 +32,7 @@ var TotalChart = React.createClass({
 		
 		// draws chart
 		var color = d3.scale.ordinal()
-			.range(["#CC333F", "#EDC951", "#217BB7", "#0B683E"]);
+			.range(["#981b1e", "#fcd209", "#3758a7", "#116a35"]);
 		
 		var radarChartOptions = {
 			w: width,

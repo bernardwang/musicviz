@@ -267,7 +267,7 @@ var TotalChart = React.createClass({displayName: "TotalChart",
 		
 		// draws chart
 		var color = d3.scale.ordinal()
-			.range(["#CC333F", "#EDC951", "#217BB7", "#0B683E"]);
+			.range(["#981b1e", "#fcd209", "#3758a7", "#116a35"]);
 		
 		var radarChartOptions = {
 			w: width,
@@ -631,7 +631,7 @@ var lineChart = function(id, data, options) {
 	 legendW: 120,
 	 legendH: 30,
 	 legendSquare: 18,
-	 legendOpacity: 0.4,
+	 legendOpacity: 0.8,
 	 legendSelectOpacity: 0.9,
 	 legendLabels: ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
 	};
@@ -775,7 +775,7 @@ var lineChart = function(id, data, options) {
 		.attr("class", "legendLabel")
 		.attr("x", cfg.w-cfg.legendW+cfg.legendH)
 		.attr("y", function(d, i){return i*cfg.legendH + 20;}) // HARDCODED FIX LATER
-		.attr("fill", "#737373")
+		.attr("fill", "#555")
 		.text(function(d,i){ return cfg.legendLabels[i];} );
 
 	/////////////////////////////////////////////////////////
@@ -925,11 +925,11 @@ var lineChart = function(id, data, options) {
 				if(index === i){
 					d3.select(this).select(".legendSelect")
 						.transition().duration(200)
-						.style("fill-opacity", 0.7);
+						.style("fill-opacity", 1);
 
 					d3.select(this).select(".legendLabel")
 						.transition().duration(200)
-						.style("fill", "#444");
+						.style("fill", "#000");
 				}
 			});
 	}
@@ -948,7 +948,7 @@ var lineChart = function(id, data, options) {
 
 					d3.select(this).select(".legendLabel")
 						.transition().duration(200)
-						.style("fill", "#737373");
+						.style("fill", "#555");
 				}
 			});
 	}

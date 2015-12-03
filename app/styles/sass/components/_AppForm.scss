@@ -3,12 +3,15 @@
 }
 
 #input-house{
+	-webkit-perspective: 1000;
+
 	button{
+		position: relative;
 		margin: spacing(0);
 		padding: 0;
 
 		width: 20%;
-		
+
 		border: 0;
 		outline: none;
 		
@@ -17,6 +20,10 @@
 		@include transition(opacity, .2s ease-out);
 
 		cursor: pointer; 
+
+		&:hover {
+			transform: scale(1.05, 1.05);
+		}
 	}
 
 	img {
@@ -47,7 +54,7 @@
 }	
 
 .input-submit{
-	color: #222;
+	color: #000;
 	font-size: 1.3em;
 
 	cursor: pointer;

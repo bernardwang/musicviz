@@ -70,8 +70,13 @@ header.ravenclaw {
   margin-top: 4rem;
 }
 
-/* line 6, ../../app/styles/sass/components/_AppForm.scss */
+/* line 5, ../../app/styles/sass/components/_AppForm.scss */
+#input-house {
+  -webkit-perspective: 1000;
+}
+/* line 8, ../../app/styles/sass/components/_AppForm.scss */
 #input-house button {
+  position: relative;
   margin: 2rem;
   padding: 0;
   width: 20%;
@@ -84,12 +89,16 @@ header.ravenclaw {
   transition: opacity, ease-out 0.2s;
   cursor: pointer;
 }
-/* line 22, ../../app/styles/sass/components/_AppForm.scss */
+/* line 24, ../../app/styles/sass/components/_AppForm.scss */
+#input-house button:hover {
+  transform: scale(1.05, 1.05);
+}
+/* line 29, ../../app/styles/sass/components/_AppForm.scss */
 #input-house img {
   width: 100%;
 }
 
-/* line 27, ../../app/styles/sass/components/_AppForm.scss */
+/* line 34, ../../app/styles/sass/components/_AppForm.scss */
 .input-username {
   display: block;
   width: 100%;
@@ -125,9 +134,9 @@ header.ravenclaw {
   color: white;
 }
 
-/* line 49, ../../app/styles/sass/components/_AppForm.scss */
+/* line 56, ../../app/styles/sass/components/_AppForm.scss */
 .input-submit {
-  color: #222;
+  color: #000;
   font-size: 1.3em;
   cursor: pointer;
   background: none;
